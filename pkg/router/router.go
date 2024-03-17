@@ -1,30 +1,36 @@
 package router
 
 import (
-	"log/slog"
-
+	"github.com/bdreece/melodeon/pkg/router/route"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	slogecho "github.com/samber/slog-echo"
-
-	"github.com/bdreece/melodeon/pkg/router/route"
-	"github.com/bdreece/melodeon/pkg/view"
 )
 
-func New(
-	routes []route.Route,
-	renderer echo.Renderer,
-	log *slog.Logger,
-    opts *view.Options,
-) *echo.Echo {
+var baseMiddlewares = []echo.MiddlewareFunc{
+	middleware.Recover(),
+    middleware.BodyLimit("2M"),
+    middleware.Gzip(),
+    middleware.Secure(),
+    middleware.CSRF(),
+}
+
+func New(opts *Options) *echo.Echo {
 	e := echo.New()
-	e.Renderer = renderer
-	e.Use(middleware.Recover())
-	e.Use(slogecho.New(log))
+	e.Renderer = opts.Renderer
+    for _, mw := range baseMiddlewares {
+        e.Use(mw)
+    }
+
+	e.Use(slogecho.New(opts.Logger))
     e.Static(opts.StaticPrefix, opts.StaticDirectory)
     e.Static(opts.AppPrefix, opts.AppDirectory)
 
-	for _, r := range routes {
+    for _, mw := range opts.Middlewares {
+        e.Use(mw.Invoke)
+    }
+
+	for _, r := range opts.Routes {
 		if h, ok := r.(route.Get); ok {
 			e.GET(r.Pattern(), h.Get)
 		}
