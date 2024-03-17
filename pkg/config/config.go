@@ -19,15 +19,15 @@ var (
 type Config struct {
 	AppOptions
 
-	Cookies session.Options `json:"cookies"`
 	Logging logger.Options  `json:"logging"`
+	Session session.Options `json:"session"`
 	Spotify spotify.Options `json:"spotify"`
 	Web     view.Options    `json:"web"`
 }
 
 var defaultConfig = Config{
 	AppOptions: DefaultAppOptions,
-	Cookies:    session.DefaultOptions,
+	Session:    session.DefaultOptions,
 	Logging:    logger.DefaultOptions,
 	Web:        view.DefaultOptions,
 }
