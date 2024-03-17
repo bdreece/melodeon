@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
-	"time"
 
 	"github.com/labstack/echo/v4"
 
 	"github.com/bdreece/melodeon/pkg/logger"
 	"github.com/bdreece/melodeon/pkg/router/route"
 	"github.com/bdreece/melodeon/pkg/session"
+	"github.com/bdreece/melodeon/pkg/spotify/api"
 )
 
 var (
@@ -29,8 +29,13 @@ type Callback struct {
 
 func (route *Callback) Get(c echo.Context) error {
 	const redirect string = "/"
-	var res *Token
+	var (
+		users *UserClient
+		token *api.Token
+		user  *api.User
+	)
 
+	ctx := c.Request().Context()
 	query, err := route.parseQuery(c)
 	if err != nil {
 		_ = logger.Error(route.log, "failed to parse query params", err)
@@ -41,20 +46,35 @@ func (route *Callback) Get(c echo.Context) error {
 		slog.String("state", query.state),
 		slog.String("code", query.code))
 
-	res, err = route.client.Exchange(c.Request().Context(), query.code)
+	token, err = route.client.Exchange(ctx, query.code)
 	if err != nil {
 		_ = logger.Error(route.log, "failed to exchange code", err)
 		goto done
 	}
 
 	route.log.Debug("exchanged authorization code",
-		slog.String("type", res.TokenType),
-		slog.String("scope", res.Scope),
-		slog.Int("expires_in", res.ExpiresIn))
+		slog.String("type", token.TokenType),
+		slog.String("scope", token.Scope),
+		slog.String("expires_in", token.ExpiresIn.String()))
 
-	if err = route.updateSession(c, res); err != nil {
-		_ = logger.Error(route.log, "failed to update session", err)
+	users = &UserClient{
+		client: client{
+			Token:       *token,
+			TokenClient: route.client,
+		},
+	}
+
+	user, err = users.GetCurrentUser(ctx)
+	if err != nil {
+		_ = logger.Error(route.log, "failed to retrieve user profile", err)
 		goto done
+	}
+
+	route.log.Debug("retrieved user profile",
+		slog.String("display_name", user.DisplayName))
+
+	if err = route.createSession(c, token, user); err != nil {
+		_ = logger.Error(route.log, "failed to create session", err)
 	}
 
 done:
@@ -81,25 +101,34 @@ func (route *Callback) parseQuery(c echo.Context) (*struct {
 	}, nil
 }
 
-func (route *Callback) updateSession(c echo.Context, res *Token) error {
-	expiresAt := time.Now().Add(time.Duration(res.ExpiresIn) * time.Second)
-	session, err := route.store.Get(c, "__melodeon-host")
+func (route *Callback) createSession(
+	c echo.Context,
+	token *api.Token,
+	user *api.User,
+) error {
+	session, err := route.store.New(c, session.Name)
 	if err != nil {
 		return fmt.Errorf("failed to get session: %w", err)
 	}
 
-	session.SetAccessToken(res.AccessToken)
-	session.SetRefreshToken(res.RefreshToken)
-	session.SetExpiration(expiresAt)
-
-	err = route.store.Save(c, session)
-	if err != nil {
+	session.SetUser(user)
+	session.SetToken(token)
+	if err = session.Save(c); err != nil {
 		return fmt.Errorf("failed to save session: %w", err)
 	}
 
 	return nil
 }
 
-func NewCallback(client *TokenClient, store *session.Store, log *slog.Logger) *Callback {
-	return &Callback{callbackRoute, client, store, logger.For[Callback](log)}
+func NewCallback(
+	client *TokenClient,
+	store *session.Store,
+	log *slog.Logger,
+) *Callback {
+	return &Callback{
+		Route:  callbackRoute,
+		client: client,
+		store:  store,
+		log:    logger.For[Callback](log),
+	}
 }

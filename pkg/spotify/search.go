@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+
+	"github.com/bdreece/melodeon/pkg/spotify/api"
 )
 
 var ErrSearch = errors.New("failed to receive search response")
@@ -43,16 +45,6 @@ func (client *SearchClient) Search(ctx context.Context, req SearchRequest) (*Sea
     return data, nil
 }
 
-func NewSearchClient(opts *ClientOptions) *SearchClient {
-    return &SearchClient{
-        client: client{
-            accessToken: opts.AccessToken,
-            refreshToken: opts.RefreshToken,
-            expiration: opts.Expiration,
-        },
-    }
-}
-
 type SearchRequest struct {
 	Q      string
 	Limit  int
@@ -78,8 +70,8 @@ func (req SearchRequest) Query() url.Values {
 }
 
 type SearchResponse struct {
-	Tracks    Page[Track]          `json:"tracks"`
-	Artists   Page[Artist]         `json:"artists"`
-	Albums    Page[SimpleAlbum]    `json:"albums"`
-	Playlists Page[SimplePlaylist] `json:"playlists"`
+	Tracks    api.Page[api.Track]          `json:"tracks"`
+	Artists   api.Page[api.Artist]         `json:"artists"`
+	Albums    api.Page[api.SimpleAlbum]    `json:"albums"`
+	Playlists api.Page[api.SimplePlaylist] `json:"playlists"`
 }

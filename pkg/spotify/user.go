@@ -5,12 +5,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/bdreece/melodeon/pkg/spotify/api"
 )
 
 type UserClient struct { client }
 
-func (client *UserClient) GetCurrentUser(ctx context.Context) (*User, error) {
-    const endpoint string = "https://accounts.spotify.com/v1/me"
+func (client *UserClient) GetCurrentUser(ctx context.Context) (*api.User, error) {
+    const endpoint string = "https://api.spotify.com/v1/me"
     if err := client.ensureValidToken(ctx); err != nil {
         return nil, err
     }
@@ -29,20 +31,10 @@ func (client *UserClient) GetCurrentUser(ctx context.Context) (*User, error) {
         return nil, fmt.Errorf("failed to received search response: %w", err)
     }
 
-    data := new(User)
+    data := new(api.User)
     if err = json.NewDecoder(res.Body).Decode(data); err != nil {
         return nil, fmt.Errorf("failed to decode user response: %w", err)
     }
 
     return data, nil
-}
-
-func NewUserClient(opts *ClientOptions) *UserClient {
-    return &UserClient{
-        client: client{
-            accessToken: opts.AccessToken,
-            refreshToken: opts.RefreshToken,
-            expiration: opts.Expiration,
-        },
-    }
 }

@@ -6,19 +6,19 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/bdreece/melodeon/pkg/spotify/api"
 )
 
 type client struct {
-	http.Client
+    http.Client
+    api.Token
 
-	accessToken  string
-	refreshToken string
-	expiration   time.Time
-	tokenClient  *TokenClient
+	TokenClient *TokenClient
 }
 
 func (client *client) Do(req *http.Request) (*http.Response, error) {
-    req.Header.Add("Authorization", "Bearer "+client.accessToken)
+    req.Header.Add("Authorization", "Bearer "+client.AccessToken)
     return client.Client.Do(req)
 }
 
@@ -44,17 +44,15 @@ func (client *client) ensureSuccessResponse(res *http.Response) error {
 }
 
 func (client *client) ensureValidToken(ctx context.Context) error {
-    if client.expiration.Before(time.Now()) {
+    if client.ExpiresIn.Before(time.Now()) {
         return nil
     }
 
-    data, err := client.tokenClient.Refresh(ctx, client.refreshToken)
+    data, err := client.TokenClient.Refresh(ctx, client.RefreshToken)
     if err != nil {
         return fmt.Errorf("failed to refresh token: %w", err)
     }
 
-    client.accessToken = data.AccessToken
-    client.refreshToken = data.RefreshToken
-    client.expiration = time.Now().Add(time.Duration(data.ExpiresIn)*time.Second)
+    client.Token = *data
     return nil
 }

@@ -9,17 +9,11 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/bdreece/melodeon/pkg/spotify/api"
 )
 
 var ErrTokenRequestFailed = errors.New("token request failed")
-
-type Token struct {
-	AccessToken  string `json:"access_token"`
-	RefreshToken string `json:"refresh_token"`
-	TokenType    string `json:"token_type"`
-	ExpiresIn    int    `json:"expires_in"`
-	Scope        string `json:"scope"`
-}
 
 type TokenClient struct {
 	http.Client
@@ -28,7 +22,7 @@ type TokenClient struct {
 	redirectURI string
 }
 
-func (client *TokenClient) Exchange(ctx context.Context, code string) (*Token, error) {
+func (client *TokenClient) Exchange(ctx context.Context, code string) (*api.Token, error) {
 	return client.send(ctx, &url.Values{
 		"grant_type":   {"authorization_code"},
 		"redirect_uri": {client.redirectURI},
@@ -36,14 +30,14 @@ func (client *TokenClient) Exchange(ctx context.Context, code string) (*Token, e
 	})
 }
 
-func (client *TokenClient) Refresh(ctx context.Context, refreshToken string) (*Token, error) {
+func (client *TokenClient) Refresh(ctx context.Context, refreshToken string) (*api.Token, error) {
 	return client.send(ctx, &url.Values{
 		"grant_type":    {"refresh_token"},
 		"refresh_token": {refreshToken},
 	})
 }
 
-func (client *TokenClient) send(ctx context.Context, form *url.Values) (*Token, error) {
+func (client *TokenClient) send(ctx context.Context, form *url.Values) (*api.Token, error) {
 	const endpoint string = "https://accounts.spotify.com/api/token"
 	body := strings.NewReader(form.Encode())
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, body)
@@ -52,18 +46,18 @@ func (client *TokenClient) send(ctx context.Context, form *url.Values) (*Token, 
 	}
 
 	req.Header.Set("Authorization", "Basic "+client.userinfo)
-    req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	res, err := client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to send token request: %w", err)
 	}
 
-    if res.StatusCode != http.StatusOK {
-        return nil, fmt.Errorf("received invalid status code %d: %w",
-            res.StatusCode, ErrTokenRequestFailed)
-    }
+	if res.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("received invalid status code %d: %w",
+			res.StatusCode, ErrTokenRequestFailed)
+	}
 
-	data := new(Token)
+	data := new(api.Token)
 	err = json.NewDecoder(res.Body).Decode(data)
 	if err != nil {
 		return nil, fmt.Errorf("failed to decode token response: %w", err)
