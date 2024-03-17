@@ -3,15 +3,17 @@ package view
 import (
 	"html/template"
 
-	"github.com/bdreece/melodeon/pkg/session"
-	"github.com/bdreece/melodeon/pkg/spotify"
 	"github.com/labstack/echo/v4"
 )
 
-func FuncMap(c echo.Context, session *session.Session) template.FuncMap {
+func funcMap(c echo.Context) template.FuncMap {
     return template.FuncMap{
-        "user": func() *spotify.User {
-            return session.Values["user"].(*spotify.User)
+        "nonce": func() *string {
+            if nonce, ok := c.Get(nonceKey).(string); ok {
+                return &nonce
+            }
+
+            return nil
         },
     }
 }
