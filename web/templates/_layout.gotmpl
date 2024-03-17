@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {{block "meta" .}}
+        <meta name="description" content="Create private Spotify jukebox sessions with ease">
+        <meta name="og:image" content="/images/android-chrome-512x512.png">
+        <meta name="og:type" content="website">
+    {{end}}
+
+    <base href="/" />
+
+    <link rel="icon" href="/static/images/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont/dist/tabler-icons.min.css" />
+    <link rel="stylesheet" href="/dist/style.css" />
+
+    <title>{{block "title" .}}melodeon{{end}}</title>
+</head>
+
+<body
+    hx-boost="true"
+    hx-select="#content"
+    hx-target="#content"
+    hx-swap="outerHTML"
+>
+    <main class="drawer">
+        <input id="drawer-toggle" type="checkbox" class="drawer-toggle" />
+
+        <div class="drawer-content flex flex-col min-h-screen max-w-screen">
+            {{template "_navbar.gotmpl" .}}
+
+            <article id="content" class="flex-1">
+                {{block "content" .}}Page not found 😞{{end}}
+            </article>
+
+            {{template "_footer.gotmpl" .}}
+        </div>
+
+        {{template "_sidebar.gotmpl" .}}
+    </main>
+
+    <script type="module" src="/dist/melodeon.js"></script>
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+</body>
+
+</html>

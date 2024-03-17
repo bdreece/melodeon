@@ -1,0 +1,5 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+go run github.com/golangci/golangci-lint/cmd/golangci-lint@latest run
+npx lint-staged

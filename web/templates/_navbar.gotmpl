@@ -1,0 +1,55 @@
+<header class="navbar py-0 bg-base-100 sticky top-0 z-10">
+    <div class="flex-none lg:hidden">
+        <label for="drawer-toggle" aria-label="open sidebar" class="btn btn-square btn-ghost drawer-button">
+            <i class="ti ti-menu-2"></i>
+        </label>
+    </div>
+
+    <div class="flex-1">
+        <a href="/" class="btn btn-ghost text-xl">
+            <img src="/static/images/favicon-32x32.png" alt="icon" width="32" height="32" />
+
+            <h1>melodeon</h1>
+        </a>
+    </div>
+
+    <nav class="flex-none hidden lg:block">
+        {{if .User}}
+
+        <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                <div class="w-10 rounded-full">
+                    {{with first .User.Images}}
+
+                    <img src="{{.Url}}" alt="Profile Image" height="{{.Height}}" width="{{.Width}}" />
+
+                    {{end}}
+                </div>
+            </div>
+
+            <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+                <li><a>Profile</a></li>
+
+                <li><a>Settings</a></li>
+
+                <li><a>Logout</a></li>
+            </ul>
+        </div>
+
+        {{else}}
+
+        <div class="flex place-items-center gap-4 px-1">
+            <form class="flex place-items-center gap-2" hx-get="/guest/room">
+                <input class="input input-bordered" name="code" type="search" placeholder="Code" />
+                <button class="btn btn-ghost" type="submit">Join Room</button>
+            </form>
+
+            <a hx-boost="false" href="/login" class="btn btn-primary">
+                <i class="ti ti-brand-spotify text-xl"></i>
+                Login with Spotify
+            </a>
+        </div>
+
+        {{end}}
+    </nav>
+</header>

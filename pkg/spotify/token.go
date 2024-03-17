@@ -1,0 +1,81 @@
+package spotify
+
+import (
+	"context"
+	"encoding/base64"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"net/http"
+	"net/url"
+	"strings"
+)
+
+var ErrTokenRequestFailed = errors.New("token request failed")
+
+type Token struct {
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
+	TokenType    string `json:"token_type"`
+	ExpiresIn    int    `json:"expires_in"`
+	Scope        string `json:"scope"`
+}
+
+type TokenClient struct {
+	http.Client
+
+	userinfo    string
+	redirectURI string
+}
+
+func (client *TokenClient) Exchange(ctx context.Context, code string) (*Token, error) {
+	return client.send(ctx, &url.Values{
+		"grant_type":   {"authorization_code"},
+		"redirect_uri": {client.redirectURI},
+		"code":         {code},
+	})
+}
+
+func (client *TokenClient) Refresh(ctx context.Context, refreshToken string) (*Token, error) {
+	return client.send(ctx, &url.Values{
+		"grant_type":    {"refresh_token"},
+		"refresh_token": {refreshToken},
+	})
+}
+
+func (client *TokenClient) send(ctx context.Context, form *url.Values) (*Token, error) {
+	const endpoint string = "https://accounts.spotify.com/api/token"
+	body := strings.NewReader(form.Encode())
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create token request: %w", err)
+	}
+
+	req.Header.Set("Authorization", "Basic "+client.userinfo)
+    req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("failed to send token request: %w", err)
+	}
+
+    if res.StatusCode != http.StatusOK {
+        return nil, fmt.Errorf("received invalid status code %d: %w",
+            res.StatusCode, ErrTokenRequestFailed)
+    }
+
+	data := new(Token)
+	err = json.NewDecoder(res.Body).Decode(data)
+	if err != nil {
+		return nil, fmt.Errorf("failed to decode token response: %w", err)
+	}
+
+	return data, nil
+}
+
+func NewTokenClient(opts *Options) *TokenClient {
+	return &TokenClient{
+		redirectURI: opts.RedirectURI,
+		userinfo: base64.StdEncoding.EncodeToString(
+			[]byte(opts.ClientID + ":" + opts.ClientSecret)),
+	}
+}
