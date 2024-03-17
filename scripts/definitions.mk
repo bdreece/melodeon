@@ -5,7 +5,7 @@ AIRFLAGS 	= -root "." \
 			  -build.bin "bin/melodeon" \
 			  -build.cmd "make" \
 			  -build.exclude_dir "web/app/dist,bin" \
-			  -build.include_ext "go,gotmpl,ts" \
+			  -build.include_ext "go,gotmpl,ts,json" \
 			  -build.kill_delay "0.5s" \
 			  -build.send_interrupt "true" \
 			  -screen.clear_on_rebuild "true" \

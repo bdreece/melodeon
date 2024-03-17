@@ -11,18 +11,32 @@ import (
 	"github.com/bdreece/melodeon/pkg/view"
 )
 
-var asRoute = []dig.ProvideOption{
-	dig.As(new(route.Route)),
-	dig.Group("routes"),
-}
+var (
+	asRoute = []dig.ProvideOption{
+		dig.As(new(route.Route)),
+		dig.Group("routes"),
+	}
+	asMiddleware = []dig.ProvideOption{
+		dig.As(new(route.Middleware)),
+		dig.Group("middlewares"),
+	}
+)
 
-func newRouter(p struct {
+func createRouter(p struct {
 	dig.In
 
-	Routes   []route.Route `group:"routes"`
-	Renderer echo.Renderer
-	Log      *slog.Logger
-	Options  *view.Options
+	Routes      []route.Route      `group:"routes"`
+	Middlewares []route.Middleware `group:"middlewares"`
+	Renderer    echo.Renderer
+	Validator   echo.Validator
+	Logger      *slog.Logger
+	Options     *view.Options
 }) *echo.Echo {
-	return router.New(p.Routes, p.Renderer, p.Log, p.Options)
+	return router.New(&router.Options{
+		Routes:      p.Routes,
+		Middlewares: p.Middlewares,
+		Renderer:    p.Renderer,
+		Logger:      p.Logger,
+		Options:     *p.Options,
+	})
 }

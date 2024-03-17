@@ -11,6 +11,7 @@ import (
 	"github.com/bdreece/melodeon/internal/guest"
 	"github.com/bdreece/melodeon/internal/home"
 	"github.com/bdreece/melodeon/internal/host"
+	"github.com/bdreece/melodeon/pkg/contract"
 	"github.com/bdreece/melodeon/pkg/logger"
 	"github.com/bdreece/melodeon/pkg/session"
 	"github.com/bdreece/melodeon/pkg/spotify"
@@ -28,7 +29,9 @@ func main() {
     err := app.NewBuilder(*cfgpath).
 		With(logger.New).
         With(session.NewStore).
+        With(contract.NewValidator, dig.As(new(echo.Validator))).
 		With(view.NewRenderer, dig.As(new(echo.Renderer))).
+        With(view.NewNonceMiddleware, asMiddleware...).
 		With(spotify.NewTokenClient).
 		With(spotify.NewAuthorize, asRoute...).
 		With(spotify.NewCallback, asRoute...).
@@ -38,7 +41,7 @@ func main() {
 		With(host.NewQueueItem, asRoute...).
 		With(host.NewWizard, asRoute...).
 		With(guest.NewRoom, asRoute...).
-		With(newRouter, dig.As(new(http.Handler))).
+		With(createRouter, dig.As(new(http.Handler))).
 		With(app.Listen).
 		Build().
         Launch(context.Background())

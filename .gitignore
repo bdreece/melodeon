@@ -165,4 +165,8 @@ dist
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/go,node
+
+bin/
 configs/melodeon.json
+tmp/
+web/assets/dist/

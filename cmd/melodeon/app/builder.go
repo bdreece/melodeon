@@ -62,7 +62,7 @@ func NewBuilder(cfgpath string) *Builder {
 
         opts.App = &cfg.AppOptions
         opts.Logger = &cfg.Logging
-        opts.Session = &cfg.Cookies
+        opts.Session = &cfg.Session
         opts.Spotify = &cfg.Spotify
         opts.View = &cfg.Web
 
