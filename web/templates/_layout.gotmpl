@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    {{block "meta" .}}
-        <meta name="description" content="Create private Spotify jukebox sessions with ease">
-        <meta name="og:image" content="/images/android-chrome-512x512.png">
-        <meta name="og:type" content="website">
+    {{block "head" .}}
+    <meta name="description" content="Create private Spotify jukebox sessions with ease">
+    <meta name="og:image" content="/images/android-chrome-512x512.png">
+    <meta name="og:type" content="website">
     {{end}}
 
     <base href="/" />
@@ -16,19 +16,25 @@
     <link rel="icon" href="/static/images/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Pacifico&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont/dist/tabler-icons.min.css" />
     <link rel="stylesheet" href="/dist/style.css" />
+
+    <script type="importmap">
+        {
+            "imports": {
+                "/vendor/htmx.js": "https://cdn.jsdelivr.net/npm/htmx.org@1.9.11/dist/htmx.min.js",
+                "/vendor/htmx-ext-head-support.js": "https://cdn.jsdelivr.net/npm/htmx-ext-head-support@2.0.0/head-support.min.js"
+            }
+        }
+    </script>
+
 
     <title>{{block "title" .}}melodeon{{end}}</title>
 </head>
 
-<body
-    hx-boost="true"
-    hx-select="#content"
-    hx-target="#content"
-    hx-swap="outerHTML"
->
+<body hx-boost="true" hx-ext="head-support" hx-select="#content" hx-swap="outerHTML" hx-target="#content">
     <main class="drawer">
         <input id="drawer-toggle" type="checkbox" class="drawer-toggle" />
 
@@ -45,8 +51,11 @@
         {{template "_sidebar.gotmpl" .}}
     </main>
 
-    <script type="module" src="/dist/melodeon.js"></script>
-    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script nonce="{{nonce}}" type="module">
+        import '/vendor/htmx.js';
+        import '/vendor/htmx-ext-head-support.js';
+        import '/dist/melodeon.js';
+    </script>
 </body>
 
 </html>

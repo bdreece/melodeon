@@ -1,0 +1,15 @@
+{{template "_layout.gotmpl" .}}
+
+{{define "head"}}
+<meta name="robots" content="noindex,nofollow">
+{{end}}
+
+{{define "content"}}
+
+<section id="host-content">
+    {{block "host-content" .}}{{end}}
+</section>
+
+<script async src="https://sdk.scdn.co/spotify-player.js"></script>
+
+{{end}}
