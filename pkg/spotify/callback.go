@@ -12,6 +12,7 @@ import (
 	"github.com/bdreece/melodeon/pkg/router/route"
 	"github.com/bdreece/melodeon/pkg/session"
 	"github.com/bdreece/melodeon/pkg/spotify/api"
+	"github.com/bdreece/melodeon/pkg/store"
 )
 
 var (
@@ -22,9 +23,10 @@ var (
 type Callback struct {
 	route.Route
 
-	client *TokenClient
-	store  *session.Store
-	log    *slog.Logger
+	handler  *TokenHandler
+	sessions *session.Store
+	store    *store.Store
+	log      *slog.Logger
 }
 
 func (route *Callback) Get(c echo.Context) error {
@@ -35,21 +37,23 @@ func (route *Callback) Get(c echo.Context) error {
 		user  *api.User
 	)
 
+	defer func() {
+        _ = c.Redirect(http.StatusFound, redirect)
+    }()
+
 	ctx := c.Request().Context()
 	query, err := route.parseQuery(c)
 	if err != nil {
-		_ = logger.Error(route.log, "failed to parse query params", err)
-		goto done
+        return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
 	route.log.Info("handling callback request...",
 		slog.String("state", query.state),
 		slog.String("code", query.code))
 
-	token, err = route.client.Exchange(ctx, query.code)
+	token, err = route.handler.ExchangeCode(ctx, query.code)
 	if err != nil {
-		_ = logger.Error(route.log, "failed to exchange code", err)
-		goto done
+        return echo.NewHTTPError(http.StatusFailedDependency, err.Error())
 	}
 
 	route.log.Debug("exchanged authorization code",
@@ -57,28 +61,20 @@ func (route *Callback) Get(c echo.Context) error {
 		slog.String("scope", token.Scope),
 		slog.String("expires_in", token.ExpiresIn.String()))
 
-	users = &UserClient{
-		client: client{
-			Token:       *token,
-			TokenClient: route.client,
-		},
-	}
-
+	users = NewUserClient(token, route.handler)
 	user, err = users.GetCurrentUser(ctx)
 	if err != nil {
-		_ = logger.Error(route.log, "failed to retrieve user profile", err)
-		goto done
+        return echo.NewHTTPError(http.StatusFailedDependency, err.Error())
 	}
 
 	route.log.Debug("retrieved user profile",
 		slog.String("display_name", user.DisplayName))
 
 	if err = route.createSession(c, token, user); err != nil {
-		_ = logger.Error(route.log, "failed to create session", err)
+        return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-done:
-	return c.Redirect(http.StatusFound, redirect)
+    return nil
 }
 
 func (route *Callback) parseQuery(c echo.Context) (*struct {
@@ -106,7 +102,7 @@ func (route *Callback) createSession(
 	token *api.Token,
 	user *api.User,
 ) error {
-	session, err := route.store.New(c, session.Name)
+	session, err := route.sessions.New(c, session.DefaultCookie)
 	if err != nil {
 		return fmt.Errorf("failed to get session: %w", err)
 	}
@@ -121,14 +117,16 @@ func (route *Callback) createSession(
 }
 
 func NewCallback(
-	client *TokenClient,
-	store *session.Store,
+	handler *TokenHandler,
+	sessions *session.Store,
+	store *store.Store,
 	log *slog.Logger,
 ) *Callback {
 	return &Callback{
-		Route:  callbackRoute,
-		client: client,
-		store:  store,
-		log:    logger.For[Callback](log),
+		Route:    callbackRoute,
+		handler:  handler,
+		sessions: sessions,
+		store:    store,
+		log:      logger.For[Callback](log),
 	}
 }

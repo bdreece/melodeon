@@ -13,9 +13,9 @@ import (
 
 var ErrSearch = errors.New("failed to receive search response")
 
-type SearchClient struct{ client }
+type SearchClient struct{ Client }
 
-func (client *SearchClient) Search(ctx context.Context, req SearchRequest) (*SearchResponse, error) {
+func (client *SearchClient) Search(ctx context.Context, req api.SearchRequest) (*api.SearchResponse, error) {
 	const endpoint string = "https://accounts.spotify.com/v1/search"
 	if err := client.ensureValidToken(ctx); err != nil {
 		return nil, err
@@ -30,48 +30,17 @@ func (client *SearchClient) Search(ctx context.Context, req SearchRequest) (*Sea
 
 	res, err := client.Do(r)
 	if err != nil {
-        return nil, fmt.Errorf("failed to send search request: %w", err)
+		return nil, fmt.Errorf("failed to send search request: %w", err)
 	}
 
-    if err = client.ensureSuccessResponse(res); err != nil {
-        return nil, fmt.Errorf("failed to received search response: %w", err)
-    }
+	if err = client.ensureSuccessResponse(res); err != nil {
+		return nil, fmt.Errorf("failed to received search response: %w", err)
+	}
 
-	data := new(SearchResponse)
+	data := new(api.SearchResponse)
 	if err = json.NewDecoder(res.Body).Decode(data); err != nil {
-        return nil, fmt.Errorf("failed to decode search response: %w", err)
+		return nil, fmt.Errorf("failed to decode search response: %w", err)
 	}
 
-    return data, nil
-}
-
-type SearchRequest struct {
-	Q      string
-	Limit  int
-	Offset int
-}
-
-func (req SearchRequest) Query() url.Values {
-	const market string = "US"
-	types, _ := json.Marshal([]string{
-		"tracks",
-		"artists",
-		"albums",
-		"playlists",
-	})
-
-	return url.Values{
-		"q":      {req.Q},
-		"market": {market},
-		"types":  {string(types)},
-		"limit":  {fmt.Sprint(req.Limit)},
-		"offset": {fmt.Sprint(req.Offset)},
-	}
-}
-
-type SearchResponse struct {
-	Tracks    api.Page[api.Track]          `json:"tracks"`
-	Artists   api.Page[api.Artist]         `json:"artists"`
-	Albums    api.Page[api.SimpleAlbum]    `json:"albums"`
-	Playlists api.Page[api.SimplePlaylist] `json:"playlists"`
+	return data, nil
 }

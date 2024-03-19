@@ -15,29 +15,35 @@ import (
 
 var ErrTokenRequestFailed = errors.New("token request failed")
 
-type TokenClient struct {
+type TokenHandler struct {
 	http.Client
 
 	userinfo    string
 	redirectURI string
 }
 
-func (client *TokenClient) Exchange(ctx context.Context, code string) (*api.Token, error) {
-	return client.send(ctx, &url.Values{
+func (handler *TokenHandler) AuthorizeServer(ctx context.Context) (*api.Token, error) {
+    return handler.send(ctx, &url.Values{
+        "grant_type": {"client_credentials"},
+    })
+}
+
+func (handler *TokenHandler) ExchangeCode(ctx context.Context, code string) (*api.Token, error) {
+	return handler.send(ctx, &url.Values{
 		"grant_type":   {"authorization_code"},
-		"redirect_uri": {client.redirectURI},
+		"redirect_uri": {handler.redirectURI},
 		"code":         {code},
 	})
 }
 
-func (client *TokenClient) Refresh(ctx context.Context, refreshToken string) (*api.Token, error) {
-	return client.send(ctx, &url.Values{
+func (handler *TokenHandler) Refresh(ctx context.Context, refreshToken string) (*api.Token, error) {
+	return handler.send(ctx, &url.Values{
 		"grant_type":    {"refresh_token"},
 		"refresh_token": {refreshToken},
 	})
 }
 
-func (client *TokenClient) send(ctx context.Context, form *url.Values) (*api.Token, error) {
+func (handler *TokenHandler) send(ctx context.Context, form *url.Values) (*api.Token, error) {
 	const endpoint string = "https://accounts.spotify.com/api/token"
 	body := strings.NewReader(form.Encode())
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, body)
@@ -45,9 +51,9 @@ func (client *TokenClient) send(ctx context.Context, form *url.Values) (*api.Tok
 		return nil, fmt.Errorf("failed to create token request: %w", err)
 	}
 
-	req.Header.Set("Authorization", "Basic "+client.userinfo)
+	req.Header.Set("Authorization", "Basic "+handler.userinfo)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	res, err := client.Do(req)
+	res, err := handler.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to send token request: %w", err)
 	}
@@ -66,8 +72,8 @@ func (client *TokenClient) send(ctx context.Context, form *url.Values) (*api.Tok
 	return data, nil
 }
 
-func NewTokenClient(opts *Options) *TokenClient {
-	return &TokenClient{
+func NewTokenHandler(opts *Options) *TokenHandler {
+	return &TokenHandler{
 		redirectURI: opts.RedirectURI,
 		userinfo: base64.StdEncoding.EncodeToString(
 			[]byte(opts.ClientID + ":" + opts.ClientSecret)),

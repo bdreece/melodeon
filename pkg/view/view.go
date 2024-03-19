@@ -1,6 +1,11 @@
 package view
 
+import "github.com/bdreece/melodeon/pkg/spotify/api"
+
 type Model map[string]any
+
+func (m Model) SetUser(user *api.User) {
+}
 
 type Options struct {
 	TemplateDirectory string            `json:"template_dir"`
@@ -17,8 +22,8 @@ var DefaultOptions = Options{
 	StaticPrefix:      "/static",
 	AppDirectory:      "web/app/dist",
 	AppPrefix:         "/dist",
-    Layouts: map[string]string{
-        "guest": "_guest.gotmpl",
-        "host": "_host.gotmpl",
-    },
+	Layouts: map[string]string{
+		"guest": "_guest.gotmpl",
+		"host":  "_host.gotmpl",
+	},
 }

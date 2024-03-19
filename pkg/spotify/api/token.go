@@ -5,14 +5,6 @@ import (
 	"time"
 )
 
-type Token struct {
-	AccessToken  string
-	RefreshToken string
-	TokenType    string
-	ExpiresIn    time.Time
-	Scope        string
-}
-
 // UnmarshalJSON implements json.Unmarshaler.
 func (token *Token) UnmarshalJSON(data []byte) error {
 	var v struct {
