@@ -8,6 +8,7 @@ import (
 	"github.com/bdreece/melodeon/pkg/logger"
 	"github.com/bdreece/melodeon/pkg/session"
 	"github.com/bdreece/melodeon/pkg/spotify"
+	"github.com/bdreece/melodeon/pkg/store"
 	"github.com/bdreece/melodeon/pkg/view"
 	"go.uber.org/dig"
 )
@@ -50,21 +51,23 @@ func NewBuilder(cfgpath string) *Builder {
 		Logger  *logger.Options
 		Session *session.Options
 		Spotify *spotify.Options
+		Store   *store.Options
 		View    *view.Options
 	}
 
 	builder := Builder{dig.New(dig.RecoverFromPanics())}
 	return builder.With(func() (opts options, err error) {
-        cfg, err := config.Load(cfgpath)
-        if err != nil {
-            return
-        }
+		cfg, err := config.Load(cfgpath)
+		if err != nil {
+			return
+		}
 
-        opts.App = &cfg.AppOptions
-        opts.Logger = &cfg.Logging
-        opts.Session = &cfg.Session
-        opts.Spotify = &cfg.Spotify
-        opts.View = &cfg.Web
+		opts.App = &cfg.AppOptions
+		opts.Logger = &cfg.Logger
+		opts.Session = &cfg.Session
+		opts.Spotify = &cfg.Spotify
+        opts.Store = &cfg.Store
+		opts.View = &cfg.View
 
 		return
 	})

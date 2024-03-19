@@ -28,6 +28,7 @@ require (
 
 require (
 	github.com/Masterminds/sprig/v3 v3.2.3
+	github.com/boltdb/bolt v1.3.1
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/gorilla/sessions v1.2.2
 	github.com/labstack/gommon v0.4.2 // indirect

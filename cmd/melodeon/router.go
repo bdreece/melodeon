@@ -16,10 +16,11 @@ var (
 		dig.As(new(route.Route)),
 		dig.Group("routes"),
 	}
-	asMiddleware = []dig.ProvideOption{
-		dig.As(new(route.Middleware)),
-		dig.Group("middlewares"),
-	}
+
+	asMiddleware   = []dig.ProvideOption{
+        dig.As(new(route.Middleware)),
+        dig.Group("middlewares"),
+    }
 )
 
 func createRouter(p struct {
