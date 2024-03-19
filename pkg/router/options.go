@@ -9,10 +9,11 @@ import (
 )
 
 type Options struct {
-    view.Options
+	view.Options
 
 	Routes      []route.Route
 	Middlewares []route.Middleware
 	Renderer    echo.Renderer
+	Validator   echo.Validator
 	Logger      *slog.Logger
 }
