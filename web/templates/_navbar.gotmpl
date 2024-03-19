@@ -41,7 +41,7 @@
         {{else}}
 
         <div class="flex items-center justify-end gap-4 px-1">
-            <form class="flex place-items-center gap-2" hx-get="/guest/room">
+            <form hx-get="/guest/room" hx-push-url="true" class="flex place-items-center gap-2">
                 <input class="input input-bordered" name="code" type="search" placeholder="Code" />
                 <button class="btn btn-ghost" type="submit">Join Room</button>
             </form>

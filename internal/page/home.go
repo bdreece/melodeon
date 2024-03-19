@@ -1,4 +1,4 @@
-package home
+package page
 
 import (
 	"net/http"
@@ -20,7 +20,7 @@ func (Home) Get(c echo.Context) error {
 	return c.Render(http.StatusOK, homeTemplate, view.Model{})
 }
 
-func Default() *Home { return &defaultHome }
+func DefaultHome() *Home { return &defaultHome }
 
 var (
 	_ route.Route = (*Home)(nil)

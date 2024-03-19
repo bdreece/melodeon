@@ -1,12 +1,21 @@
 {{template "_layout.gotmpl" .}}
 
-{{define "title"}}melodeon &mdash; Host Web Player{{end}}
+{{define "title"}}melodeon &mdash; Oopsie!{{end}}
 
 {{define "content"}}
 
-<section>
-Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quaerat quos nam ea porro recusandae impedit deserunt quo, quam voluptates, delectus natus eum minima officiis error veritatis laboriosam aliquam laudantium sapiente!
+<section class="flex place-content-center pt-8">
+    {{if .Error}}
+
+    <div role="alert" class="alert alert-error w-1/2 shadow-lg">
+        <i class="ti ti-info-circle"></i>
+        <div>
+            <h3 class="font-bold">An unexpected error occurred! 😭</h3>
+            <small class="text-xs">{{default "Please navigate to the home page" .Error}}</small>
+        </div>
+    </div>
+
+    {{end}}
 </section>
 
 {{end}}
-

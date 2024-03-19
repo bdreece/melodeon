@@ -21,8 +21,15 @@ type Room struct {
 }
 
 // Get implements route.Get.
-func (*Room) Get(c echo.Context) error {
-    return c.Render(http.StatusOK, roomTemplate, view.Model{})
+func (route *Room) Get(c echo.Context) error {
+    req := new(RoomRequest)
+    if err := c.Bind(req); err != nil {
+        return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+    }
+
+    route.log.Info("request", slog.String("code", req.Code))
+
+    return c.Render(http.StatusOK, roomTemplate, view.Model{"Req": req})
 }
 
 func NewRoom(log *slog.Logger) *Room {
@@ -33,3 +40,7 @@ var (
 	_ route.Route = (*Room)(nil)
 	_ route.Get   = (*Room)(nil)
 )
+
+type RoomRequest struct {
+    Code string `param:"code"`
+}

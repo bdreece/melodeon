@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont/dist/tabler-icons.min.css" />
     <link rel="stylesheet" href="/dist/style.css" />
 
-    <script type="importmap">
+    <script hx-head="re-eval" type="importmap" nonce="{{.Nonce}}">
         {
             "imports": {
                 "/vendor/htmx.js": "https://cdn.jsdelivr.net/npm/htmx.org@1.9.11/dist/htmx.min.js",
@@ -30,18 +30,17 @@
         }
     </script>
 
-
     <title>{{block "title" .}}melodeon{{end}}</title>
 </head>
 
-<body hx-boost="true" hx-ext="head-support" hx-select="#content" hx-swap="outerHTML" hx-target="#content">
+<body hx-boost="true" hx-ext="head-support">
     <main class="drawer">
         <input id="drawer-toggle" type="checkbox" class="drawer-toggle" />
 
         <div class="drawer-content flex flex-col min-h-screen max-w-screen">
             {{template "_navbar.gotmpl" .}}
 
-            <article id="content" class="flex-1">
+            <article id="content" class="flex-1 bg-base-200">
                 {{block "content" .}}Page not found 😞{{end}}
             </article>
 
@@ -51,7 +50,7 @@
         {{template "_sidebar.gotmpl" .}}
     </main>
 
-    <script nonce="{{nonce}}" type="module">
+    <script nonce="{{.Nonce}}" type="module">
         import '/vendor/htmx.js';
         import '/vendor/htmx-ext-head-support.js';
         import '/dist/melodeon.js';

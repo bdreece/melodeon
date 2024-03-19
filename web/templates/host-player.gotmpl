@@ -4,6 +4,22 @@
 
 {{define "host-content"}}
 
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex a corrupti voluptas minus, nemo, debitis corporis accusamus, exercitationem reiciendis reprehenderit tempora. Cumque sed quidem, sit veritatis eligendi magni similique laborum?
+{{$id := randAlpha 16}}
+
+<div id="{{$id}}"></div>
+
+<script nonce="{{.Nonce}}" type="module">
+    import { Player } from '/dist/melodeon.js';
+
+    const res = await fetch('/host/token', {
+        credentials: 'include',
+    });
+
+    const { token } = await res.json();
+    const player = new Player({
+        target: document.getElementById('{{$id}}'),
+        props: { token }
+    });
+</script>
 
 {{end}}
