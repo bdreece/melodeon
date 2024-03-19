@@ -62,9 +62,19 @@ declare global {
 
         type PlayerEventNameMap = {
             ready: WebPlaybackPlayer;
-            not_ready: WebPlaybackPlayer
-            player_state_changed: WebPlaybackState
+            not_ready: WebPlaybackPlayer;
+            player_state_changed: WebPlaybackState;
         }
+
+        type PlayerError = {
+            message: any;
+        }
+
+        type PlayerErrorType =
+            'initialization_error' |
+            'authentication_error' |
+            'account_error' |
+            'playback_error';
 
         declare class Player {
             constructor(options: PlayerOptions);
@@ -73,6 +83,8 @@ declare global {
                 K extends keyof PlayerEventNameMap,
                 E extends PlayerEventNameMap[K]
             >(name: K, cb: (evt: E) => void): void;
+
+            on<K extends PlayerErrorType>(name: K, cb: (err: PlayerError) => void): void;
 
             connect(): void;
             disconnect(): void;
@@ -86,6 +98,7 @@ declare global {
             seek(ms: number): Promise<void>;
             previousTrack(): Promise<void>;
             nextTrack(): Promise<void>;
+            activateElement(): Promise<void>;
         }
     }
 }

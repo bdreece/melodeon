@@ -1,3 +1,3 @@
 import './index.css';
 
-export { default as SpotifyPlayer } from './components/spotify-player';
+export { default as Player } from './components/Player.svelte';
