@@ -38,13 +38,13 @@ func (route *Callback) Get(c echo.Context) error {
 	)
 
 	defer func() {
-        _ = c.Redirect(http.StatusFound, redirect)
-    }()
+		_ = c.Redirect(http.StatusFound, redirect)
+	}()
 
 	ctx := c.Request().Context()
 	query, err := route.parseQuery(c)
 	if err != nil {
-        return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
 	route.log.Info("handling callback request...",
@@ -53,7 +53,7 @@ func (route *Callback) Get(c echo.Context) error {
 
 	token, err = route.handler.ExchangeCode(ctx, query.code)
 	if err != nil {
-        return echo.NewHTTPError(http.StatusFailedDependency, err.Error())
+		return echo.NewHTTPError(http.StatusFailedDependency, err.Error())
 	}
 
 	route.log.Debug("exchanged authorization code",
@@ -64,17 +64,17 @@ func (route *Callback) Get(c echo.Context) error {
 	users = NewUserClient(token, route.handler)
 	user, err = users.GetCurrentUser(ctx)
 	if err != nil {
-        return echo.NewHTTPError(http.StatusFailedDependency, err.Error())
+		return echo.NewHTTPError(http.StatusFailedDependency, err.Error())
 	}
 
 	route.log.Debug("retrieved user profile",
 		slog.String("display_name", user.DisplayName))
 
 	if err = route.createSession(c, token, user); err != nil {
-        return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-    return nil
+	return nil
 }
 
 func (route *Callback) parseQuery(c echo.Context) (*struct {

@@ -23,9 +23,9 @@ type TokenHandler struct {
 }
 
 func (handler *TokenHandler) AuthorizeServer(ctx context.Context) (*api.Token, error) {
-    return handler.send(ctx, &url.Values{
-        "grant_type": {"client_credentials"},
-    })
+	return handler.send(ctx, &url.Values{
+		"grant_type": {"client_credentials"},
+	})
 }
 
 func (handler *TokenHandler) ExchangeCode(ctx context.Context, code string) (*api.Token, error) {

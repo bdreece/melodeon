@@ -12,13 +12,13 @@ import (
 )
 
 const (
-    tokenBucketKey string = "tokens"
+	tokenBucketKey string = "tokens"
 )
 
 type Store struct {
 	*bolt.DB
 
-    log *slog.Logger
+	log *slog.Logger
 }
 
 func (s *Store) Get(ctx context.Context, key string) (*api.Token, error) {
@@ -33,14 +33,14 @@ func (s *Store) Get(ctx context.Context, key string) (*api.Token, error) {
 		tx, err := s.DB.Begin(false)
 		if err != nil {
 			ch <- result{err: err}
-            return
+			return
 		}
 
 		token := new(api.Token)
 		bucket := tx.Bucket([]byte(tokenBucketKey))
 		if err := json.Unmarshal(bucket.Get([]byte(key)), &token); err != nil {
 			ch <- result{err: err}
-            return
+			return
 		}
 
 		ch <- result{data: token}
@@ -58,25 +58,25 @@ func (s *Store) Put(ctx context.Context, key string, token *api.Token) error {
 	ch := make(chan error, 1)
 	defer close(ch)
 	go func() {
-        tx, err := s.DB.Begin(true)
-        if err != nil {
-            ch<- err
-            return
-        }
+		tx, err := s.DB.Begin(true)
+		if err != nil {
+			ch <- err
+			return
+		}
 
-        bucket := tx.Bucket([]byte(tokenBucketKey))
-        value, err := json.Marshal(token)
-        if err != nil {
-            ch<- err
-            return
-        }
+		bucket := tx.Bucket([]byte(tokenBucketKey))
+		value, err := json.Marshal(token)
+		if err != nil {
+			ch <- err
+			return
+		}
 
-        if err = bucket.Put([]byte(key), value); err != nil {
-            ch<- err
-            return
-        }
+		if err = bucket.Put([]byte(key), value); err != nil {
+			ch <- err
+			return
+		}
 
-        close(ch)
+		close(ch)
 	}()
 
 	select {
@@ -88,12 +88,12 @@ func (s *Store) Put(ctx context.Context, key string, token *api.Token) error {
 }
 
 func New(log *slog.Logger, opts *Options) (*Store, error) {
-    const perms fs.FileMode = 0o0600
+	const perms fs.FileMode = 0o0600
 
-    db, err := bolt.Open(opts.Path, perms, nil)
-    if err != nil {
-        return nil, err
-    }
+	db, err := bolt.Open(opts.Path, perms, nil)
+	if err != nil {
+		return nil, err
+	}
 
-    return &Store{db, logger.For[Store](log)}, nil
+	return &Store{db, logger.For[Store](log)}, nil
 }

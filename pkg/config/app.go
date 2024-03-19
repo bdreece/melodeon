@@ -8,11 +8,10 @@ type AppOptions struct {
 }
 
 func (opts AppOptions) Addr() string {
-    return fmt.Sprintf(":%d", opts.Port)
+	return fmt.Sprintf(":%d", opts.Port)
 }
 
 var DefaultAppOptions = AppOptions{
-    Mode: HTTP,
-    Port: 3000,
+	Mode: HTTP,
+	Port: 3000,
 }
-

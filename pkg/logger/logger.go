@@ -28,14 +28,14 @@ func New(opts *Options) (*slog.Logger, error) {
 }
 
 func For[T any](log *slog.Logger) *slog.Logger {
-    t := reflect.TypeFor[T]()
-    log = log.With(slog.String("context", t.String()))
-    log.Debug("initializing...")
+	t := reflect.TypeFor[T]()
+	log = log.With(slog.String("context", t.String()))
+	log.Debug("initializing...")
 
-    return log
+	return log
 }
 
 func Error(log *slog.Logger, msg string, err error) error {
-    log.Error(msg, slog.String("error", err.Error()))
-    return fmt.Errorf("%s: %w", msg, err)
+	log.Error(msg, slog.String("error", err.Error()))
+	return fmt.Errorf("%s: %w", msg, err)
 }

@@ -21,30 +21,30 @@ type Token struct {
 }
 
 func (t *Token) Get(c echo.Context) error {
-    type response struct {
-        Token string `json:"token"`
-    }
+	type response struct {
+		Token string `json:"token"`
+	}
 
-    s, err := t.sessions.Get(c, session.DefaultCookie)
-    if err != nil {
-        return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-    }
+	s, err := t.sessions.Get(c, session.DefaultCookie)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
 
-    token := s.Token()
-    if token == nil {
-        return echo.NewHTTPError(http.StatusUnauthorized, "no token in session")
-    }
+	token := s.Token()
+	if token == nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, "no token in session")
+	}
 
-    return c.JSON(http.StatusOK, response{
-        Token: token.AccessToken,
-    })
+	return c.JSON(http.StatusOK, response{
+		Token: token.AccessToken,
+	})
 }
 
 func NewToken(sessions *session.Store, log *slog.Logger) *Token {
-    return &Token{tokenRoute, sessions, logger.For[Token](log)}
+	return &Token{tokenRoute, sessions, logger.For[Token](log)}
 }
 
 var (
-    _ route.Route = (*Token)(nil)
-    _ route.Get = (*Token)(nil)
+	_ route.Route = (*Token)(nil)
+	_ route.Get   = (*Token)(nil)
 )

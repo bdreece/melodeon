@@ -7,11 +7,12 @@ import (
 	"github.com/labstack/echo/v4"
 
 	"github.com/bdreece/melodeon/pkg/logger"
-	"github.com/bdreece/melodeon/pkg/view"
 	"github.com/bdreece/melodeon/pkg/router/route"
+	"github.com/bdreece/melodeon/pkg/view"
 )
 
 const roomTemplate string = "guest-room.gotmpl"
+
 var roomRoute = route.New("/guest/room")
 
 type Room struct {
@@ -22,14 +23,14 @@ type Room struct {
 
 // Get implements route.Get.
 func (route *Room) Get(c echo.Context) error {
-    req := new(RoomRequest)
-    if err := c.Bind(req); err != nil {
-        return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-    }
+	req := new(RoomRequest)
+	if err := c.Bind(req); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
 
-    route.log.Info("request", slog.String("code", req.Code))
+	route.log.Info("request", slog.String("code", req.Code))
 
-    return c.Render(http.StatusOK, roomTemplate, view.Model{"Req": req})
+	return c.Render(http.StatusOK, roomTemplate, view.Model{"Req": req})
 }
 
 func NewRoom(log *slog.Logger) *Room {
@@ -42,5 +43,5 @@ var (
 )
 
 type RoomRequest struct {
-    Code string `param:"code"`
+	Code string `param:"code"`
 }

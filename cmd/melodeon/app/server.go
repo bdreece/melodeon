@@ -26,12 +26,12 @@ func (srv *Server) Serve(ctx context.Context) error {
 		errch <- srv.serve(srv.listener, srv.handler)
 	}()
 
-    select {
-    case err := <-errch:
-        return err
-    case <-ctx.Done():
-        return srv.listener.Close()
-    }
+	select {
+	case err := <-errch:
+		return err
+	case <-ctx.Done():
+		return srv.listener.Close()
+	}
 }
 
 func Listen(handler http.Handler, opts *config.AppOptions) (*Server, error) {

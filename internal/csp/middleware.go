@@ -32,13 +32,13 @@ func (mw *Middleware) Invoke(next echo.HandlerFunc) echo.HandlerFunc {
 				panic(logger.Error(mw.log, "failed to generate nonce", err))
 			}
 
-            v := hex.EncodeToString(buf)
+			v := hex.EncodeToString(buf)
 			sess.SetNonce(v)
 			if err = sess.Save(c); err != nil {
 				return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 			}
 
-            nonce = &v
+			nonce = &v
 		}
 
 		policy := DefaultPolicy

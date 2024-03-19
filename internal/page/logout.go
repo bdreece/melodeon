@@ -18,17 +18,17 @@ type Logout struct {
 
 func (route *Logout) Get(c echo.Context) error {
 	defer func() {
-        _ = c.Redirect(http.StatusFound, "/")
-    }()
+		_ = c.Redirect(http.StatusFound, "/")
+	}()
 
 	cookie, err := c.Cookie(session.DefaultCookie)
 	if err != nil {
-        return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
 	cookie.MaxAge = -1
 	c.SetCookie(cookie)
-    return nil
+	return nil
 }
 
 func NewLogout(sessions *session.Store) *Logout {

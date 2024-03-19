@@ -12,6 +12,7 @@ import (
 )
 
 const queueItemTemplate = "host-queue-item.gotmpl"
+
 var queueItemRoute = route.New("/host/queue/{i}")
 
 type QueueItem struct {
@@ -33,7 +34,7 @@ func (*QueueItem) Delete(echo.Context) error {
 
 // Get implements route.Get.
 func (QueueItem) Get(c echo.Context) error {
-    return c.Render(http.StatusOK, queueItemTemplate, view.Model{})
+	return c.Render(http.StatusOK, queueItemTemplate, view.Model{})
 }
 
 func NewQueueItem(store *session.Store, log *slog.Logger) *QueueItem {

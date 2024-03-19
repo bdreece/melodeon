@@ -10,6 +10,7 @@ import (
 )
 
 const playerTemplate string = "host-player.gotmpl"
+
 var playerRoute = route.New("/host/player")
 var defaultPlayer = Player{playerRoute}
 

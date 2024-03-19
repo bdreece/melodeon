@@ -53,22 +53,22 @@ func (r *Renderer) Render(w io.Writer, name string, data any, c echo.Context) er
 		return t.ExecuteTemplate(w, name, data)
 	}
 
-    sess, err := r.sessions.Get(c, session.DefaultCookie)
-    if err != nil {
-        return echo.NewHTTPError(http.StatusInternalServerError)
-    }
+	sess, err := r.sessions.Get(c, session.DefaultCookie)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError)
+	}
 
-    if user := sess.User(); user != nil {
-        model[userKey] = user
-    }
+	if user := sess.User(); user != nil {
+		model[userKey] = user
+	}
 
-    nonceSess, err := r.sessions.Get(c, session.NonceCookie)
-    if err != nil {
-        return echo.NewHTTPError(http.StatusInternalServerError)
-    }
-    if nonce := nonceSess.Nonce(); nonce != nil {
-        model[nonceKey] = *nonce
-    }
+	nonceSess, err := r.sessions.Get(c, session.NonceCookie)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError)
+	}
+	if nonce := nonceSess.Nonce(); nonce != nil {
+		model[nonceKey] = *nonce
+	}
 
 	return t.ExecuteTemplate(w, name, model)
 }

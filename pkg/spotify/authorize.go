@@ -16,7 +16,7 @@ import (
 
 var (
 	authorizeEndpoint *url.URL
-	authorizeScope = strings.Join([]string{
+	authorizeScope    = strings.Join([]string{
 		"playlist-read-private",
 		"playlist-read-collaborative",
 		"streaming",
@@ -29,7 +29,7 @@ var (
 
 func init() {
 	authorizeEndpoint, _ = url.Parse(
-        "https://accounts.spotify.com/authorize?response_type=code")
+		"https://accounts.spotify.com/authorize?response_type=code")
 }
 
 type Authorize struct {
@@ -75,6 +75,6 @@ func NewAuthorize(opts *Options, log *slog.Logger) *Authorize {
 }
 
 var (
-    _ route.Route = (*Authorize)(nil)
-    _ route.Get = (*Authorize)(nil)
+	_ route.Route = (*Authorize)(nil)
+	_ route.Get   = (*Authorize)(nil)
 )

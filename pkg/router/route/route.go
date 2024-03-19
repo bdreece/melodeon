@@ -11,5 +11,5 @@ type route struct {
 func (r route) Pattern() string { return r.pattern }
 
 func New(pattern string) Route {
-    return route{pattern}
+	return route{pattern}
 }

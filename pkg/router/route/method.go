@@ -11,7 +11,7 @@ type Post interface {
 }
 
 type Put interface {
-    Put(echo.Context) error
+	Put(echo.Context) error
 }
 
 type Patch interface {

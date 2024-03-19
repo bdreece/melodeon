@@ -40,4 +40,3 @@ var DefaultPolicy = Policy{
 	FontSrc:    []string{gstatic, jsdelivr},
 	ImgSrc:     []string{any},
 }
-

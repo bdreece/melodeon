@@ -25,16 +25,16 @@ var baseMiddlewares = []echo.MiddlewareFunc{
 		CookieHTTPOnly: true,
 		CookieSameSite: http.SameSiteStrictMode,
 	}),
-    middleware.TimeoutWithConfig(middleware.TimeoutConfig{
-        Timeout: 30*time.Second,
-    }),
+	middleware.TimeoutWithConfig(middleware.TimeoutConfig{
+		Timeout: 30 * time.Second,
+	}),
 }
 
 func New(opts *Options) *echo.Echo {
 	e := echo.New()
 	e.Renderer = opts.Renderer
 	e.Validator = opts.Validator
-    e.HTTPErrorHandler = handleError
+	e.HTTPErrorHandler = handleError
 
 	for _, mw := range baseMiddlewares {
 		e.Use(mw)

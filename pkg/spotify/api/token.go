@@ -15,16 +15,16 @@ func (token *Token) UnmarshalJSON(data []byte) error {
 		ExpiresIn    int    `json:"expires_in"`
 	}
 
-    if err := json.Unmarshal(data, &v); err != nil {
-        return err
-    }
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
 
-    token.AccessToken = v.AccessToken
-    token.RefreshToken = v.RefreshToken
-    token.TokenType = v.TokenType
-    token.Scope = v.Scope
-    token.ExpiresIn = time.Now().Add(time.Duration(v.ExpiresIn)*time.Second)
-    return nil
+	token.AccessToken = v.AccessToken
+	token.RefreshToken = v.RefreshToken
+	token.TokenType = v.TokenType
+	token.Scope = v.Scope
+	token.ExpiresIn = time.Now().Add(time.Duration(v.ExpiresIn) * time.Second)
+	return nil
 }
 
 var _ json.Unmarshaler = (*Token)(nil)

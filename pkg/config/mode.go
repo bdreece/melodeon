@@ -16,21 +16,21 @@ const (
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (mode *Mode) UnmarshalJSON(data []byte) error {
-    var v string
-    if err := json.Unmarshal(data, &v); err != nil {
-        return err
-    }
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
 
-    switch v {
-    case string(HTTP):
-        *mode = HTTP
-    case string(FCGI):
-        *mode = FCGI
-    default:
-        return ErrInvalidMode
-    }
+	switch v {
+	case string(HTTP):
+		*mode = HTTP
+	case string(FCGI):
+		*mode = FCGI
+	default:
+		return ErrInvalidMode
+	}
 
-    return nil
+	return nil
 }
 
 var _ json.Unmarshaler = (*Mode)(nil)

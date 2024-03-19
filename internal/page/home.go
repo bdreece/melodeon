@@ -10,6 +10,7 @@ import (
 )
 
 const homeTemplate string = "home.gotmpl"
+
 var homeRoute = route.New("/")
 var defaultHome = Home{homeRoute}
 

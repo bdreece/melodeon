@@ -33,14 +33,14 @@ func main() {
 		With(session.NewStore).
 		With(spotify.NewTokenHandler).
 		With(renderer.New, dig.As(new(echo.Renderer))).
-        With(validator.Default, dig.As(new(echo.Validator))).
-        With(csp.New, asMiddleware...).
+		With(validator.Default, dig.As(new(echo.Validator))).
+		With(csp.New, asMiddleware...).
 		With(spotify.NewAuthorize, asRoute...).
 		With(spotify.NewCallback, asRoute...).
 		With(page.DefaultHome, asRoute...).
-        With(page.NewLogout, asRoute...).
+		With(page.NewLogout, asRoute...).
 		With(host.DefaultPlayer, asRoute...).
-        With(host.NewToken, asRoute...).
+		With(host.NewToken, asRoute...).
 		With(host.NewQueue, asRoute...).
 		With(host.NewQueueItem, asRoute...).
 		With(host.NewWizard, asRoute...).

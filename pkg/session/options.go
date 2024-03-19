@@ -10,7 +10,7 @@ import (
 type Options struct {
 	RootDirectory string           `json:"root_dir"`
 	SecretKey     []byte           `json:"secret_key"`
-	Cookies        sessions.Options `json:"cookies"`
+	Cookies       sessions.Options `json:"cookies"`
 }
 
 var DefaultOptions = Options{
@@ -29,7 +29,7 @@ func (opts *Options) UnmarshalJSON(data []byte) error {
 	var v struct {
 		RootDirectory *string `json:"string"`
 		SecretKey     []byte  `json:"secret_key"`
-		Cookies        struct {
+		Cookies       struct {
 			Path     *string `json:"path"`
 			Domain   *string `json:"domain"`
 			MaxAge   *int    `json:"max_age"`
@@ -44,9 +44,9 @@ func (opts *Options) UnmarshalJSON(data []byte) error {
 	}
 
 	opts.SecretKey = v.SecretKey
-    if v.RootDirectory != nil {
-        opts.RootDirectory = *v.RootDirectory
-    }
+	if v.RootDirectory != nil {
+		opts.RootDirectory = *v.RootDirectory
+	}
 
 	if v.Cookies.Path != nil {
 		opts.Cookies.Path = *v.Cookies.Path

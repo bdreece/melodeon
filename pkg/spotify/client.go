@@ -59,7 +59,7 @@ func (client *Client) ensureValidToken(ctx context.Context) error {
 
 func NewClient(token *api.Token, handler *TokenHandler) *Client {
 	return &Client{
-        Token: *token,
-        handler: handler,
-    }
+		Token:   *token,
+		handler: handler,
+	}
 }

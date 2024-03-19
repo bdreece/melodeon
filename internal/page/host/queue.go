@@ -13,6 +13,7 @@ import (
 )
 
 const queueTemplate string = "host-queue.gotmpl"
+
 var queueRoute = route.New("/host/queue")
 
 type Queue struct {
