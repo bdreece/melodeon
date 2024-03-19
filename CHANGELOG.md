@@ -15,11 +15,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Add validator implementation
 -   Add func map implementation, nonce
 -   Add host, guest pages
+-   Add global error handler
+-   Add bolt DB store
+-   Add `svelte`
 
 ### Changed
 
 -   Update configuration
 -   Update router constructor
+-   Update startup DI
+-   Update CHANGELOG.md
+-   Consolidate `spotify` package
+-   Refactor session schema
+-   Extract `page` package
 -   Update startup DI
 
 ### Fixed
