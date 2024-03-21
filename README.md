@@ -8,10 +8,12 @@ Create private Spotify jukebox sessions.
 ## Getting Started (WIP)
 
 -   Login using your Spotify account.
--   Follow the wizard to create a private jukebox:
-    <strike> - Select a playlist to start. - Control the queueing strategy (allow/deny, priority, etc.). - Generate a secret room code.
--   Share the code with select guests to let them join the room. - Room guests are _only_ allowed to queue music.
-    </strike>
+-   <strike>Follow the wizard to create a private jukebox:</strike>
+    -   <strike>Select a playlist to start.</strike>
+    -   <strike>Control the queueing strategy (allow/deny, priority, etc.).</strike>
+    -   <strike>Generate a secret room code.</strike>
+-   <strike>Share the code with select guests to let them join the room.</strike>
+    -   <strike>Room guests are _only_ allowed to queue music.</strike>
 
 ## License
 
