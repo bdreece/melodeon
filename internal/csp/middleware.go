@@ -8,7 +8,7 @@ import (
 	"net/http"
 
 	"github.com/bdreece/melodeon/pkg/logger"
-	"github.com/bdreece/melodeon/pkg/router/route"
+	"github.com/bdreece/melodeon/pkg/router"
 	"github.com/bdreece/melodeon/pkg/session"
 	"github.com/labstack/echo/v4"
 )
@@ -53,4 +53,4 @@ func New(sessions *session.Store, log *slog.Logger) *Middleware {
 	return &Middleware{sessions, log}
 }
 
-var _ route.Middleware = (*Middleware)(nil)
+var _ router.Middleware = (*Middleware)(nil)

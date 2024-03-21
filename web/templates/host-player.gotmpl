@@ -4,22 +4,4 @@
 
 {{define "host-content"}}
 
-{{$id := randAlpha 16}}
-
-<div id="{{$id}}"></div>
-
-<script nonce="{{.Nonce}}" type="module">
-    import { Player } from '/dist/melodeon.js';
-
-    const res = await fetch('/host/token', {
-        credentials: 'include',
-    });
-
-    const { token } = await res.json();
-    const player = new Player({
-        target: document.getElementById('{{$id}}'),
-        props: { token }
-    });
-</script>
-
 {{end}}

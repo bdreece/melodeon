@@ -20,6 +20,7 @@ import (
 
 const (
 	userKey  string = "User"
+	tokenKey string = "Token"
 	nonceKey string = "Nonce"
 )
 
@@ -60,6 +61,10 @@ func (r *Renderer) Render(w io.Writer, name string, data any, c echo.Context) er
 
 	if user := sess.User(); user != nil {
 		model[userKey] = user
+	}
+
+	if token := sess.Token(); token != nil {
+		model[tokenKey] = token
 	}
 
 	nonceSess, err := r.sessions.Get(c, session.NonceCookie)

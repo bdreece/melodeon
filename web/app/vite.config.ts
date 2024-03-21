@@ -36,7 +36,7 @@ const daisyUIConfig: DaisyUIConfig = {
 const tailwindConfig: TailwindConfig = {
     content: [
         '../templates/*.gotmpl',
-        './src/**/*.ts',
+        './src/**/*.{ts,svelte}',
     ],
     theme: {
         extend: {

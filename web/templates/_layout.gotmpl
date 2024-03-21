@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     {{block "head" .}}
     <meta name="description" content="Create private Spotify jukebox sessions with ease">
@@ -33,7 +33,13 @@
     <title>{{block "title" .}}melodeon{{end}}</title>
 </head>
 
-<body hx-boost="true" hx-ext="head-support">
+<body
+    hx-boost="true"
+    hx-ext="head-support"
+    hx-target="#content"
+    hx-select="#content"
+    hx-swap="outerHTML"
+>
     <main class="drawer">
         <input id="drawer-toggle" type="checkbox" class="drawer-toggle" />
 
@@ -50,10 +56,16 @@
         {{template "_sidebar.gotmpl" .}}
     </main>
 
-    <script nonce="{{.Nonce}}" type="module">
+    <script id="bottom-scripts" hx-swap-oob="true" nonce="{{.Nonce}}" type="module">
         import '/vendor/htmx.js';
         import '/vendor/htmx-ext-head-support.js';
-        import '/dist/melodeon.js';
+        import {spotify, user} from '/dist/melodeon.js';
+
+        {{if .Token}}
+        spotify.initialize('{{.Token.AccessToken}}');
+        {{end}}
+
+        user.store.set(JSON.parse({{toJson .User}}));
     </script>
 </body>
 

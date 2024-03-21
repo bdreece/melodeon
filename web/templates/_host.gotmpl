@@ -2,14 +2,21 @@
 
 {{define "head"}}
 <meta name="robots" content="noindex,nofollow">
-{{end}}
-
-{{define "content"}}
-
-<section id="host-content">
-    {{block "host-content" .}}{{end}}
-</section>
 
 <script async src="https://sdk.scdn.co/spotify-player.js"></script>
+{{end}}
+
+{{define "player"}}
+{{$id := randAlpha 6}}
+
+<div id="{{$id}}"></div>
+
+<script type="module" nonce="{{.Nonce}}">
+    import {PlayerPanel} from '/dist/melodeon.js';
+
+    const panel = new PlayerPanel({
+        target: document.getElementById('{{$id}}'),
+    });
+</script>
 
 {{end}}
