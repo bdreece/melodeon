@@ -7,18 +7,17 @@ import (
 	"go.uber.org/dig"
 
 	"github.com/bdreece/melodeon/pkg/router"
-	"github.com/bdreece/melodeon/pkg/router/route"
 	"github.com/bdreece/melodeon/pkg/view"
 )
 
 var (
 	asRoute = []dig.ProvideOption{
-		dig.As(new(route.Route)),
+		dig.As(new(router.Route)),
 		dig.Group("routes"),
 	}
 
 	asMiddleware = []dig.ProvideOption{
-		dig.As(new(route.Middleware)),
+		dig.As(new(router.Middleware)),
 		dig.Group("middlewares"),
 	}
 )
@@ -26,8 +25,8 @@ var (
 func createRouter(p struct {
 	dig.In
 
-	Routes      []route.Route      `group:"routes"`
-	Middlewares []route.Middleware `group:"middlewares"`
+	Routes      []router.Route      `group:"routes"`
+	Middlewares []router.Middleware `group:"middlewares"`
 	Renderer    echo.Renderer
 	Validator   echo.Validator
 	Logger      *slog.Logger

@@ -40,7 +40,6 @@ func main() {
 		With(page.DefaultHome, asRoute...).
 		With(page.NewLogout, asRoute...).
 		With(host.DefaultPlayer, asRoute...).
-		With(host.NewToken, asRoute...).
 		With(host.NewQueue, asRoute...).
 		With(host.NewQueueItem, asRoute...).
 		With(host.NewWizard, asRoute...).
