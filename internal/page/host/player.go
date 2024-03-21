@@ -5,16 +5,16 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/bdreece/melodeon/pkg/router/route"
+	"github.com/bdreece/melodeon/pkg/router"
 	"github.com/bdreece/melodeon/pkg/view"
 )
 
 const playerTemplate string = "host-player.gotmpl"
 
-var playerRoute = route.New("/host/player")
+var playerRoute = router.NewRoute("/host/player")
 var defaultPlayer = Player{playerRoute}
 
-type Player struct{ route.Route }
+type Player struct{ router.Route }
 
 // Get implements route.Get.
 func (Player) Get(c echo.Context) error {
@@ -24,6 +24,6 @@ func (Player) Get(c echo.Context) error {
 func DefaultPlayer() *Player { return &defaultPlayer }
 
 var (
-	_ route.Route = (*Player)(nil)
-	_ route.Get   = (*Player)(nil)
+	_ router.Route    = (*Player)(nil)
+	_ router.GetRoute = (*Player)(nil)
 )

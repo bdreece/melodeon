@@ -11,11 +11,12 @@ import (
 	"github.com/labstack/echo/v4"
 
 	"github.com/bdreece/melodeon/pkg/logger"
-	"github.com/bdreece/melodeon/pkg/router/route"
+	"github.com/bdreece/melodeon/pkg/router"
 )
 
 var (
 	authorizeEndpoint *url.URL
+	authorizeRoute    = router.NewRoute("/login")
 	authorizeScope    = strings.Join([]string{
 		"playlist-read-private",
 		"playlist-read-collaborative",
@@ -24,6 +25,8 @@ var (
 		"user-modify-playback-state",
 		"user-read-currently-playing",
 		"user-read-playback-state",
+		"user-read-email",
+		"user-read-private",
 	}, " ")
 )
 
@@ -33,15 +36,14 @@ func init() {
 }
 
 type Authorize struct {
-	route.Route
+	router.Route
 
-	log      *slog.Logger
-	opts     *Options
-	endpoint *url.URL
+	log  *slog.Logger
+	opts *Options
 }
 
 func (route *Authorize) Get(c echo.Context) error {
-	endpoint := *route.endpoint
+	endpoint := *authorizeEndpoint
 	state := make([]byte, 16)
 	if _, err := rand.Read(state); err != nil {
 		return logger.Error(route.log, "failed to generate state", err)
@@ -65,16 +67,10 @@ func NewAuthorize(opts *Options, log *slog.Logger) *Authorize {
 	qs.Set("redirect_uri", opts.RedirectURI)
 	endpoint.RawQuery = qs.Encode()
 
-	return &Authorize{
-		Route: route.New("/login"),
-
-		log:      logger.For[Authorize](log),
-		opts:     opts,
-		endpoint: &endpoint,
-	}
+	return &Authorize{authorizeRoute, logger.For[Authorize](log), opts}
 }
 
 var (
-	_ route.Route = (*Authorize)(nil)
-	_ route.Get   = (*Authorize)(nil)
+	_ router.Route    = (*Authorize)(nil)
+	_ router.GetRoute = (*Authorize)(nil)
 )

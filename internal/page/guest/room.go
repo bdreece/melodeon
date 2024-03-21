@@ -7,16 +7,16 @@ import (
 	"github.com/labstack/echo/v4"
 
 	"github.com/bdreece/melodeon/pkg/logger"
-	"github.com/bdreece/melodeon/pkg/router/route"
+	"github.com/bdreece/melodeon/pkg/router"
 	"github.com/bdreece/melodeon/pkg/view"
 )
 
 const roomTemplate string = "guest-room.gotmpl"
 
-var roomRoute = route.New("/guest/room")
+var roomRoute = router.NewRoute("/guest/room")
 
 type Room struct {
-	route.Route
+	router.Route
 
 	log *slog.Logger
 }
@@ -38,8 +38,8 @@ func NewRoom(log *slog.Logger) *Room {
 }
 
 var (
-	_ route.Route = (*Room)(nil)
-	_ route.Get   = (*Room)(nil)
+	_ router.Route    = (*Room)(nil)
+	_ router.GetRoute = (*Room)(nil)
 )
 
 type RoomRequest struct {

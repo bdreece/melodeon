@@ -9,19 +9,19 @@ import (
 	"github.com/labstack/echo/v4"
 
 	"github.com/bdreece/melodeon/pkg/logger"
-	"github.com/bdreece/melodeon/pkg/router/route"
+	"github.com/bdreece/melodeon/pkg/router"
 	"github.com/bdreece/melodeon/pkg/session"
 	"github.com/bdreece/melodeon/pkg/spotify/api"
 	"github.com/bdreece/melodeon/pkg/store"
 )
 
 var (
-	callbackRoute           = route.New("/callback")
+	callbackRoute           = router.NewRoute("/callback")
 	ErrMissingCallbackParam = errors.New("missing code or state param")
 )
 
 type Callback struct {
-	route.Route
+	router.Route
 
 	handler  *TokenHandler
 	sessions *session.Store

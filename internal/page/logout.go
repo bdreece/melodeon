@@ -3,15 +3,15 @@ package page
 import (
 	"net/http"
 
-	"github.com/bdreece/melodeon/pkg/router/route"
+	"github.com/bdreece/melodeon/pkg/router"
 	"github.com/bdreece/melodeon/pkg/session"
 	"github.com/labstack/echo/v4"
 )
 
-var logoutRoute = route.New("/logout")
+var logoutRoute = router.NewRoute("/logout")
 
 type Logout struct {
-	route.Route
+	router.Route
 
 	sessions *session.Store
 }
@@ -36,6 +36,6 @@ func NewLogout(sessions *session.Store) *Logout {
 }
 
 var (
-	_ route.Route = (*Logout)(nil)
-	_ route.Get   = (*Logout)(nil)
+	_ router.Route    = (*Logout)(nil)
+	_ router.GetRoute = (*Logout)(nil)
 )

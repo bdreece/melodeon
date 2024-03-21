@@ -7,17 +7,17 @@ import (
 	"github.com/labstack/echo/v4"
 
 	"github.com/bdreece/melodeon/pkg/logger"
-	"github.com/bdreece/melodeon/pkg/router/route"
+	"github.com/bdreece/melodeon/pkg/router"
 	"github.com/bdreece/melodeon/pkg/session"
 	"github.com/bdreece/melodeon/pkg/view"
 )
 
 const queueTemplate string = "host-queue.gotmpl"
 
-var queueRoute = route.New("/host/queue")
+var queueRoute = router.NewRoute("/host/queue")
 
 type Queue struct {
-	route.Route
+	router.Route
 
 	store *session.Store
 	log   *slog.Logger
@@ -48,9 +48,9 @@ func NewQueue(store *session.Store, log *slog.Logger) *Queue {
 }
 
 var (
-	_ route.Route  = (*Queue)(nil)
-	_ route.Get    = (*Queue)(nil)
-	_ route.Patch  = (*Queue)(nil)
-	_ route.Post   = (*Queue)(nil)
-	_ route.Delete = (*Queue)(nil)
+	_ router.Route       = (*Queue)(nil)
+	_ router.GetRoute    = (*Queue)(nil)
+	_ router.PatchRoute  = (*Queue)(nil)
+	_ router.PostRoute   = (*Queue)(nil)
+	_ router.DeleteRoute = (*Queue)(nil)
 )

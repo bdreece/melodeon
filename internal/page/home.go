@@ -5,18 +5,18 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/bdreece/melodeon/pkg/router/route"
+	"github.com/bdreece/melodeon/pkg/router"
 	"github.com/bdreece/melodeon/pkg/view"
 )
 
 const homeTemplate string = "home.gotmpl"
 
-var homeRoute = route.New("/")
+var homeRoute = router.NewRoute("/")
 var defaultHome = Home{homeRoute}
 
-type Home struct{ route.Route }
+type Home struct{ router.Route }
 
-// Get implements Get.
+// Get implements router.GetRoute.
 func (Home) Get(c echo.Context) error {
 	return c.Render(http.StatusOK, homeTemplate, view.Model{})
 }
@@ -24,6 +24,6 @@ func (Home) Get(c echo.Context) error {
 func DefaultHome() *Home { return &defaultHome }
 
 var (
-	_ route.Route = (*Home)(nil)
-	_ route.Get   = (*Home)(nil)
+	_ router.Route    = (*Home)(nil)
+	_ router.GetRoute = (*Home)(nil)
 )

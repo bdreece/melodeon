@@ -6,17 +6,17 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/bdreece/melodeon/pkg/router/route"
+	"github.com/bdreece/melodeon/pkg/router"
 	"github.com/bdreece/melodeon/pkg/session"
 	"github.com/bdreece/melodeon/pkg/view"
 )
 
 const queueItemTemplate = "host-queue-item.gotmpl"
 
-var queueItemRoute = route.New("/host/queue/{i}")
+var queueItemRoute = router.NewRoute("/host/queue/{i}")
 
 type QueueItem struct {
-	route.Route
+	router.Route
 
 	store *session.Store
 	log   *slog.Logger
@@ -42,8 +42,8 @@ func NewQueueItem(store *session.Store, log *slog.Logger) *QueueItem {
 }
 
 var (
-	_ route.Route  = (*QueueItem)(nil)
-	_ route.Get    = (*QueueItem)(nil)
-	_ route.Delete = (*QueueItem)(nil)
-	_ route.Put    = (*QueueItem)(nil)
+	_ router.Route       = (*QueueItem)(nil)
+	_ router.GetRoute    = (*QueueItem)(nil)
+	_ router.DeleteRoute = (*QueueItem)(nil)
+	_ router.PutRoute    = (*QueueItem)(nil)
 )

@@ -7,8 +7,6 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	slogecho "github.com/samber/slog-echo"
-
-	"github.com/bdreece/melodeon/pkg/router/route"
 )
 
 var baseMiddlewares = []echo.MiddlewareFunc{
@@ -49,19 +47,19 @@ func New(opts *Options) *echo.Echo {
 	}
 
 	for _, r := range opts.Routes {
-		if h, ok := r.(route.Get); ok {
+		if h, ok := r.(GetRoute); ok {
 			e.GET(r.Pattern(), h.Get)
 		}
-		if h, ok := r.(route.Post); ok {
+		if h, ok := r.(PostRoute); ok {
 			e.POST(r.Pattern(), h.Post)
 		}
-		if h, ok := r.(route.Put); ok {
+		if h, ok := r.(PutRoute); ok {
 			e.PUT(r.Pattern(), h.Put)
 		}
-		if h, ok := r.(route.Patch); ok {
+		if h, ok := r.(PatchRoute); ok {
 			e.PATCH(r.Pattern(), h.Patch)
 		}
-		if h, ok := r.(route.Delete); ok {
+		if h, ok := r.(DeleteRoute); ok {
 			e.DELETE(r.Pattern(), h.Delete)
 		}
 	}

@@ -7,17 +7,17 @@ import (
 	"github.com/labstack/echo/v4"
 
 	"github.com/bdreece/melodeon/pkg/logger"
-	"github.com/bdreece/melodeon/pkg/router/route"
+	"github.com/bdreece/melodeon/pkg/router"
 	"github.com/bdreece/melodeon/pkg/session"
 	"github.com/bdreece/melodeon/pkg/view"
 )
 
 const wizardTemplate = "host-wizard.gotmpl"
 
-var wizardRoute = route.New("/host/wizard")
+var wizardRoute = router.NewRoute("/host/wizard")
 
 type Wizard struct {
-	route.Route
+	router.Route
 
 	store *session.Store
 	log   *slog.Logger
@@ -38,7 +38,7 @@ func NewWizard(store *session.Store, log *slog.Logger) *Wizard {
 }
 
 var (
-	_ route.Route = (*Wizard)(nil)
-	_ route.Get   = (*Wizard)(nil)
-	_ route.Post  = (*Wizard)(nil)
+	_ router.Route     = (*Wizard)(nil)
+	_ router.GetRoute  = (*Wizard)(nil)
+	_ router.PostRoute = (*Wizard)(nil)
 )
