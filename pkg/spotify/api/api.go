@@ -3,21 +3,21 @@ package api
 import "time"
 
 type (
-	node struct {
+	Node struct {
 		Href string `json:"href"`
 		Id   string `json:"id"`
 		Type string `json:"type"`
 		Uri  string `json:"uri"`
 	}
 
-	namedNode struct {
-		node
+	NamedNode struct {
+		Node
 
 		Name string `json:"name"`
 	}
 
 	SimpleAlbum struct {
-		namedNode
+		NamedNode
 
 		AlbumType            string         `json:"album_type"`
 		Artists              []SimpleArtist `json:"artists"`
@@ -31,7 +31,7 @@ type (
 	}
 
 	Artist struct {
-		namedNode
+		NamedNode
 
 		ExternalUrls ExternalUrls `json:"external_urls"`
 		Followers    Followers    `json:"followers"`
@@ -41,7 +41,7 @@ type (
 	}
 
 	SimpleArtist struct {
-		namedNode
+		NamedNode
 
 		ExternalUrls ExternalUrls `json:"external_urls"`
 	}
@@ -72,7 +72,7 @@ type (
 	}
 
 	SimplePlaylist struct {
-		namedNode
+		NamedNode
 
 		Collaborative bool         `json:"collaborative"`
 		Description   string       `json:"description"`
@@ -82,7 +82,7 @@ type (
 		SnapshotId    string       `json:"snapshot_id"`
 
 		Owner struct {
-			node
+			Node
 			ExternalUrls ExternalUrls `json:"external_urls"`
 			Followers    Followers    `json:"followers"`
 			DisplayName  *string      `json:"display_name"`
@@ -112,7 +112,7 @@ type (
 	}
 
 	Track struct {
-		namedNode
+		NamedNode
 
 		Album            SimpleAlbum  `json:"album"`
 		Artists          []Artist     `json:"artists"`
@@ -145,7 +145,7 @@ type (
 	}
 
 	User struct {
-		node
+		Node
 
 		Country      string       `json:"country"`
 		DisplayName  string       `json:"display_name"`
