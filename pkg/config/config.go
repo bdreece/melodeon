@@ -1,3 +1,8 @@
+// Package config implements configuration file deserialization
+// for providing global options structures.
+//
+// The config package should be used during startup to inject
+// options into dependencies
 package config
 
 import (
@@ -17,6 +22,7 @@ var (
 	ErrParseConfig = errors.New("failed to parse config file")
 )
 
+// A Config provides the schema for configuration files
 type Config struct {
 	AppOptions
 
@@ -35,10 +41,12 @@ var defaultConfig = Config{
 	View:       view.DefaultOptions,
 }
 
+// Default returns the default configuration values
 func Default() *Config {
 	return &defaultConfig
 }
 
+// Load deserializes the configuration file located at the given path
 func Load(path string) (*Config, error) {
 	f, err := os.Open(path)
 	if err != nil {
