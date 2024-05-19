@@ -1,0 +1,11 @@
+.dropdown-menu {
+    & &__items {
+        position: absolute;
+        width: fit-content(125%);
+        display: none;
+    }
+
+    &[open='true'] &__items {
+        display: initial;
+    }
+}

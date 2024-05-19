@@ -1,0 +1,27 @@
+{
+    "$schema": "https://json.schemastore.org/package.json",
+    "name": "@melodeon/app",
+    "type": "module",
+    "version": "0.1.0",
+    "author": "Brian Reece <me@bdreece.dev>",
+    "license": "MIT",
+    "scripts": {
+        "build": "rollup --silent -c",
+        "test": "vitest run"
+    },
+    "devDependencies": {
+        "@rollup/plugin-node-resolve": "^15.2.3",
+        "@rollup/plugin-terser": "^0.4.4",
+        "@rollup/plugin-typescript": "^11.1.6",
+        "@tsconfig/recommended": "^1.0.6",
+        "autoprefixer": "^10.4.19",
+        "cssnano": "^7.0.1",
+        "postcss": "^8.4.38",
+        "rollup": "^4.16.4",
+        "rollup-plugin-postcss": "^4.0.2",
+        "sass": "^1.77.1",
+        "tslib": "^2.6.2",
+        "typescript": "^5.4.5",
+        "vitest": "^1.6.0"
+    }
+}

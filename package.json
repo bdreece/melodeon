@@ -1,0 +1,66 @@
+{
+    "$schema": "https://json.schemastore.org/package.json",
+    "name": "melodeon",
+    "private": true,
+    "version": "1.0.0",
+    "author": "Brian Reece <me@bdreece.dev>",
+    "license": "MIT",
+    "scripts": {
+        "prepare": "husky"
+    },
+    "workspaces": [
+        "web/app"
+    ],
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^7.9.0",
+        "@typescript-eslint/parser": "^7.9.0",
+        "cross-env": "^7.0.3",
+        "eslint": "^8.56.0",
+        "eslint-config-prettier": "^9.1.0",
+        "husky": "^9.0.11",
+        "lint-staged": "^15.2.2",
+        "prettier": "^3.2.5",
+        "prettier-plugin-go-template": "^0.0.15",
+        "stylelint": "^16.4.0",
+        "stylelint-config-standard-scss": "^13.1.0",
+        "typescript": "^5.4.5"
+    },
+    "lint-staged": {
+        "*.js": "cross-env ESLINT_USE_FLAT_CONFIG=false eslint --cache --fix",
+        "*.scss": "stylelint --fix",
+        "*.{js,scss,json,yml,gotmpl,md}": "prettier --write"
+    },
+    "eslintConfig": {
+        "root": true,
+        "extends": [
+            "eslint:recommended",
+            "plugin:@typescript-eslint/recommended",
+            "prettier"
+        ],
+        "plugins": [
+            "@typescript-eslint/eslint-plugin"
+        ],
+        "parser": "@typescript-eslint/parser",
+        "parserOptions": {
+            "sourceType": "module",
+            "ecmaVersion": "latest"
+        },
+        "env": {
+            "es6": true,
+            "browser": true
+        }
+    },
+    "prettier": {
+        "plugins": [
+            "prettier-plugin-go-template"
+        ],
+        "tabWidth": 4,
+        "printWidth": 120,
+        "arrowParens": "avoid",
+        "singleQuote": true,
+        "singleAttributePerLine": true
+    },
+    "stylelint": {
+        "extends": "stylelint-config-standard-scss"
+    }
+}

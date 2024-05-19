@@ -1,0 +1,9 @@
+@use '../theme';
+
+.footer {
+    padding: calc(2 * theme.$spacer);
+
+    & &__text {
+        text-align: center;
+    }
+}

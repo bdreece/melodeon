@@ -1,0 +1,23 @@
+@use '../theme';
+
+.nav {
+    & > ul {
+        display: flex;
+        align-items: stretch;
+        gap: calc(2 * theme.$spacer);
+    }
+
+    & &__item {
+        padding: theme.$spacer calc(2 * theme.$spacer);
+        border-radius: 4px;
+        transition: background-color 200ms;
+
+        &:hover {
+            background-color: theme.$color-base-300;
+
+            @media (prefers-color-scheme: dark) {
+                background-color: theme.$color-base-700;
+            }
+        }
+    }
+}

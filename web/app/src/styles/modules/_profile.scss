@@ -1,0 +1,12 @@
+@use '../theme';
+
+.profile {
+    & &__badge {
+        display: flex;
+        gap: theme.$spacer;
+
+        & img {
+            border-radius: 50%;
+        }
+    }
+}

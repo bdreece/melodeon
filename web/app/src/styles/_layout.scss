@@ -1,0 +1,44 @@
+@use 'theme';
+
+:root {
+    font-family: theme.$font-family;
+    font-size: theme.$font-size;
+    font-weight: theme.$font-weight;
+}
+
+body {
+    background-color: theme.$color-base-200;
+    color: theme.$color-base-900;
+}
+
+#main {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    max-width: 100vw;
+    min-height: 100vh;
+}
+
+#header,
+#footer,
+#content {
+    margin-inline: calc(2 * theme.$spacer);
+}
+
+#header,
+#footer {
+    background-color: theme.$color-base-100;
+    margin-block: calc(2 * theme.$spacer);
+    border-radius: 6px;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: theme.$color-base-900;
+        color: theme.$color-base-100;
+    }
+
+    #header,
+    #footer {
+        background-color: theme.$color-base-800;
+    }
+}

@@ -1,0 +1,3 @@
+@mixin rounding($outer, $dist) {
+    border-radius: calc($outer - $dist);
+}

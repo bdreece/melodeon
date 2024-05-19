@@ -1,0 +1,21 @@
+@use '../theme';
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: calc(4 * theme.$spacer);
+
+    & > &__brand {
+        font-size: 125%;
+        font-weight: 800;
+
+        & > h1 {
+            margin-block: auto;
+        }
+    }
+
+    & > &__nav {
+        flex: 1;
+    }
+}
