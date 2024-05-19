@@ -25,19 +25,44 @@ import (
 	"go.uber.org/dig"
 )
 
-const defaultConfigPath string = "configs/melodeon.yml"
-
-var configPath = flag.String("c", defaultConfigPath, "config path")
-
-var (
-	asRoute = dig.Group("routes")
+const (
+	copyrightNotice string = "melodeon - Copyright (C) 2024 Brian Reece"
+	licenseNotice   string = `
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.`
 )
+
+const (
+	defaultPort       int    = 3000
+	defaultConfigPath string = "/etc/melodeon/config.yml"
+)
+
+var args struct {
+	Port       int
+	ConfigPath string
+}
+
+var asRoute = dig.Group("routes")
+
+func init() {
+	flag.Usage = func() {
+		_, _ = fmt.Fprintln(flag.CommandLine.Output(), copyrightNotice)
+		_, _ = fmt.Fprintln(flag.CommandLine.Output())
+		flag.PrintDefaults()
+		_, _ = fmt.Fprintln(flag.CommandLine.Output(), licenseNotice)
+	}
+
+	flag.IntVar(&args.Port, "p", defaultPort, "port")
+	flag.StringVar(&args.ConfigPath, "c", defaultConfigPath, "config path")
+	flag.Parse()
+}
 
 func main() {
 	defer shutdown()
-	flag.Parse()
 
-	cfg, err := config.Parse(*configPath)
+	cfg, err := config.Parse(args.ConfigPath)
 	if err != nil {
 		panic(err)
 	}
@@ -72,7 +97,7 @@ func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer cancel()
 
-	if err := app.Launch(ctx); err != nil {
+	if err := app.Launch(ctx, args.Port); err != nil {
 		panic(err)
 	}
 }

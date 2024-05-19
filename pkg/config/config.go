@@ -32,7 +32,6 @@ type WebConfig struct {
 
 type RootConfig struct {
 	Mode Mode `yaml:"mode"`
-	Port int  `yaml:"port"`
 }
 
 func Parse(path string) (*Config, error) {

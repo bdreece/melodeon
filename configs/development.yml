@@ -1,0 +1,30 @@
+mode: http
+
+db:
+    path: ./tmp/store.db
+
+logging:
+    dir: ./tmp
+    level: -4
+
+rooms:
+    bucket_name: rooms
+
+sessions:
+    bucket_name: sessions
+    signing_key: '1DrJ5fMTc0U//jqsbOizio1BxG4GBDAIv1qYbdMIx34fxij1/Ww++tk8Ct8svTR5V6uZMh1Rm+z0CxrJEKEmuw=='
+    encrypt_key: 'defAA8mBKcG1OQTIlFcosBtTLNATEZOdrPzldXAiTdc='
+    cookie:
+        path: /
+        max_age: 86400
+        same_site: none
+
+spotify:
+    client_id: 'bc41068f439544ea8bdf80bee8088c62'
+    client_secret: '217af814a63c47b4ad9a1b3a88b795cc'
+    redirect_uri: 'http://localhost:3000/authorize'
+
+web:
+    static_dir: web/static
+    assets_dir: web/app/dist
+    template_dir: web/templates

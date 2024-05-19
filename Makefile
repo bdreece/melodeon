@@ -26,6 +26,12 @@ build: $(src) $(dist) | $(targetdir)
 run:
 	$(GO) run $(GOFLAGS) $(abspath $(cmddir))
 
+## test: run all tests
+.PHONY: test
+test:
+	$(GO) test $(GOFLAGS) ./...
+	$(NPM) run -ws test
+
 ## watch: run the application with live-reload
 .PHONY: watch
 watch:
@@ -35,7 +41,7 @@ watch:
 # UTILITIES
 # ================ #
 $(dist) &: $(assets)
-	npm run -w @melodeon/app build
+	$(NPM) run -w @melodeon/app build
 
 $(targetdir):
 	@mkdir -p $@
