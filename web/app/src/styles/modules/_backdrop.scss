@@ -1,0 +1,17 @@
+@use '../theme';
+
+.backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: none;
+
+    &--tinted {
+        background-color: black;
+        opacity: 0.4;
+    }
+
+    &--visible {
+        display: initial;
+    }
+}

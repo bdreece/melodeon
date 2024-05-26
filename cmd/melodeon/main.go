@@ -35,8 +35,8 @@ GNU General Public License for more details.`
 )
 
 const (
-	defaultPort       int    = 3000
-	defaultConfigPath string = "/etc/melodeon/config.yml"
+	defaultPort       int    = 80
+	defaultConfigPath string = "/usr/share/melodeon/config.yml"
 )
 
 var args struct {
@@ -85,6 +85,7 @@ func main() {
 			Provide(spotify.NewAuthManager).
 			Provide(digdug.Supply(page.Home), asRoute).
 			Provide(api.NewLoginRoute, asRoute).
+			Provide(api.NewLogoutRoute, asRoute).
 			Provide(api.NewAuthorizeRoute, asRoute).
 			Provide(renderer.New, dig.As(new(echo.Renderer))).
 			Provide(digdug.Supply(validator.Default), dig.As(new(echo.Validator))).

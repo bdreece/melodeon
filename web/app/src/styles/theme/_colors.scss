@@ -1,9 +1,73 @@
-$base-100: #d8f3dc;
-$base-200: #b7e4c7;
-$base-300: #95d5b2;
-$base-400: #74c69d;
-$base-500: #52b788;
-$base-600: #40916c;
-$base-700: #2d6a4f;
-$base-800: #1b4332;
-$base-900: #081c15;
+@use 'sass:map';
+
+$-base-100: #f2f3f3;
+$-base-200: #bdbebe;
+$-base-300: #898989;
+$-base-400: #545454;
+$-base-500: #1f1f1f;
+$-primary: #715c91;
+$-neutral: #ebe7c0;
+$-success: #97c3a9;
+$-warning: #dba967;
+$-danger: #ac4439;
+$-info: #537180;
+
+@function -create-variants($base) {
+    @return (
+        base: $base,
+        lighter: lighten($base, 15),
+        light: lighten($base, 5),
+        dark: darken($base, 5),
+        darker: darken($base, 15)
+    );
+}
+
+$-theme-base: (
+    border: -create-variants($-base-300),
+    primary: -create-variants($-primary),
+    neutral: -create-variants($-neutral),
+    success: -create-variants($-success),
+    warning: -create-variants($-warning),
+    danger: -create-variants($-danger),
+    info: -create-variants($-info),
+);
+$-theme-light: (
+    body: -create-variants($-base-100),
+    text: -create-variants($-base-500),
+);
+$-theme-dark: (
+    body: -create-variants($-base-500),
+    text: -create-variants($-base-100),
+);
+
+@mixin scheme {
+    --color-base-100: #{$-base-100};
+    --color-base-200: #{$-base-200};
+    --color-base-300: #{$-base-300};
+    --color-base-400: #{$-base-400};
+    --color-base-500: #{$-base-500};
+
+    $theme: map.merge($-theme-base, $-theme-light);
+
+    @each $name, $variants in $theme {
+        @each $variant, $color in $variants {
+            @if $variant == base {
+                --color-#{$name}: #{$color};
+            } @else {
+                --color-#{$name}-#{$variant}: #{$color};
+            }
+        }
+    }
+
+    @media (prefers-color-scheme: dark) {
+        @each $name, $variants in $-theme-dark {
+            @each $variant, $color in $variants {
+                @if $variant == base {
+                    --color-#{$name}: #{$color};
+                } @else {
+                    --color-#{$name}-#{$variant}: #{$color};
+                }
+            }
+        }
+    }
+}

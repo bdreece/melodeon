@@ -3,10 +3,18 @@
 .profile {
     & &__badge {
         display: flex;
+        align-items: center;
         gap: theme.$spacer;
 
         & img {
             border-radius: 50%;
         }
+    }
+
+    & &__menu {
+        display: flex;
+        flex-direction: column;
+        gap: calc(2 * theme.$spacer);
+        padding: calc(4 * theme.$spacer);
     }
 }

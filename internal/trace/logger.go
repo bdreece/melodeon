@@ -35,6 +35,10 @@ func NewLogger(cfg *Config) (*Logger, error) {
 		mode fs.FileMode = 0o0644
 	)
 
+	if err := os.MkdirAll(cfg.Directory, mode); err != nil {
+		return nil, fmt.Errorf("failed to initialize log directory %q: %v", cfg.Directory, err)
+	}
+
 	path := filepath.Join(cfg.Directory, "melodeon.log")
 	f, err := os.OpenFile(path, flag, mode)
 	if err != nil {

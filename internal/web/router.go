@@ -34,11 +34,11 @@ func NewRouter(p RouterParams) yodel.Router {
 		middleware.BodyLimit("4M"),
 		middleware.Secure(),
 		session.Middleware(p.SessionStore),
+		middleware.Static(p.Config.StaticDirectory),
+		middleware.Static(p.Config.AssetsDirectory),
 		slogecho.New(&p.Log.Logger),
 	)
 
-	router.Static("/", p.Config.StaticDirectory)
-	router.Static("/", p.Config.AssetsDirectory)
 	for _, route := range p.Routes {
 		router.Add(route)
 	}

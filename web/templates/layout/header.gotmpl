@@ -3,7 +3,7 @@
     class="header"
 >
     <a
-        class="header__brand"
+        class="header__brand link"
         href="/"
     >
         <h1>melodeon</h1>
@@ -22,5 +22,58 @@
         </ul>
     </nav>
 
-    <x-room-menu></x-room-menu>
+    <x-auth-menu></x-auth-menu>
+
+    <template id="profile-template">
+        <li class="nav__item">
+            <x-dropdown class="profile">
+                <figure
+                    class="profile__badge"
+                    slot="toggle"
+                >
+                    <img
+                        alt="Profile"
+                        width="32"
+                        height="32"
+                    />
+                    <figcaption></figcaption>
+                </figure>
+
+                <ul
+                    class="profile__menu"
+                    slot="items"
+                >
+                    <li>
+                        <a href="/settings">Settings</a>
+                    </li>
+
+                    <li>
+                        <a href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </x-dropdown>
+        </li>
+    </template>
+
+    <template id="login-template">
+        <li class="nav__item">
+            <a
+                class="nav__link"
+                href="/join"
+            >
+                <i class="ti ti-key"></i>
+                Join Room
+            </a>
+        </li>
+
+        <li class="nav__item">
+            <a
+                class="nav__link"
+                href="/login"
+            >
+                <i class="ti ti-brand-spotify"></i>
+                Get Started
+            </a>
+        </li>
+    </template>
 </header>

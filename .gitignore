@@ -174,5 +174,4 @@ dist
 bin/
 tmp/
 web/app/dist/
-configs/melodeon.yml
-configs/melodeon.*.yml
+configs/*.yml

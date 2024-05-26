@@ -4,11 +4,13 @@
     font-family: theme.$font-family;
     font-size: theme.$font-size;
     font-weight: theme.$font-weight;
+
+    @include theme.color-scheme;
 }
 
 body {
-    background-color: theme.$color-base-200;
-    color: theme.$color-base-900;
+    background-color: var(--color-body);
+    color: var(--color-text);
 }
 
 #main {
@@ -18,27 +20,18 @@ body {
     min-height: 100vh;
 }
 
-#header,
-#footer,
 #content {
-    margin-inline: calc(2 * theme.$spacer);
+    padding: calc(4 * theme.$spacer) calc(6 * theme.$spacer);
 }
 
-#header,
-#footer {
-    background-color: theme.$color-base-100;
-    margin-block: calc(2 * theme.$spacer);
-    border-radius: 6px;
-}
+#header {
+    background-color: var(--color-primary-dark);
+    color: var(--color-neutral-light);
+    box-shadow: 0 4px 8px var(--color-text-dark);
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
 
-@media (prefers-color-scheme: dark) {
-    body {
-        background-color: theme.$color-base-900;
-        color: theme.$color-base-100;
-    }
-
-    #header,
-    #footer {
-        background-color: theme.$color-base-800;
+    @media (prefers-color-scheme: dark) {
+        box-shadow: 0 4px 8px var(--color-text-dark);
     }
 }

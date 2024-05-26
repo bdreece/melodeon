@@ -23,6 +23,10 @@ func funcMap(c echo.Context) template.FuncMap {
 				return nil
 			}
 
+			if values.Room == "" && values.Image == "" && values.Username == "" {
+				return nil
+			}
+
 			return values
 		},
 

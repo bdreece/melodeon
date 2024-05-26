@@ -1,11 +1,19 @@
-.dropdown-menu {
+@use '../theme';
+
+.dropdown {
     & &__items {
         position: absolute;
-        width: fit-content(125%);
+        transform: translateY(calc(4 * theme.$spacer));
+        background-color: var(--color-body-dark);
+        color: var(--color-text-light);
+        border: 2px solid var(--color-border);
+        border-radius: 6px;
+        box-shadow: 2px 2px 16px var(--color-base-500);
+        z-index: 20;
         display: none;
-    }
 
-    &[open='true'] &__items {
-        display: initial;
+        &--visible {
+            display: initial;
+        }
     }
 }

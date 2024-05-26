@@ -4,7 +4,7 @@ NPM         = npm
 AIR 		= $(GO) run github.com/cosmtrek/air@latest
 AIRFLAGS 	= -root "." \
 			  -build.bin "bin/melodeon" \
-			  -build.args_bin "-c ./configs/melodeon.yml" \
+			  -build.args_bin "-p 3000 -c ./configs/development.yml" \
 			  -build.cmd "make" \
 			  -build.exclude_dir "bin,tmp,node_modules,web/app/node_modules,web/app/dist" \
 			  -build.include_ext "go,gotmpl,js,scss,json,yml" \

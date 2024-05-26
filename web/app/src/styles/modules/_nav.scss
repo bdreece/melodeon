@@ -13,11 +13,7 @@
         transition: background-color 200ms;
 
         &:hover {
-            background-color: theme.$color-base-300;
-
-            @media (prefers-color-scheme: dark) {
-                background-color: theme.$color-base-700;
-            }
+            background-color: var(--color-primary-light);
         }
     }
 }

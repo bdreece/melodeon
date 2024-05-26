@@ -61,13 +61,18 @@
             {{ template "footer.gotmpl" . }}
         </main>
 
+        <x-backdrop></x-backdrop>
+
         <script
             defer
             src="/melodeon.umd.cjs"
         ></script>
 
-    <script type="application/json" id="session">
-        {{session | toRawJson | unescapeJS}}
+    <script
+        type="application/json"
+        id="session"
+    >
+        {{ session | toRawJson | unescapeJS }}
     </script>
     </body>
 </html>

@@ -1,29 +1,34 @@
-import { Styles } from '../lib';
+import Backdrop from './Backdrop';
+import { styles } from '../lib';
 
 const template = document.createElement('template');
 template.innerHTML = `
 <div class="dropdown">
-    <button type="button" class="dropdown__toggle">
+    <div class="dropdown__toggle">
         <slot name="toggle"></slot>
-    </button>
+    </div>
 
-    <ul class="dropdown__items">
+    <div class="dropdown__items">
         <slot name="items"></slot>
-    </ul>
+    </div>
 </div>
 `;
 
 export default class Dropdown extends HTMLElement {
-    static observedAttributes = ['open'];
+    static observedAttributes = ['visible'];
 
     #toggle;
     #items;
 
-    get open() {
-        return !!this.getAttribute('open');
+    get visible() {
+        return this.hasAttribute('visible');
     }
-    set open(value) {
-        this.setAttribute('open', value ? 'true' : '');
+    set visible(value) {
+        if (value) {
+            this.setAttribute('visible', 'visible');
+        } else {
+            this.removeAttribute('visible');
+        }
     }
 
     constructor() {
@@ -31,25 +36,24 @@ export default class Dropdown extends HTMLElement {
 
         const shadow = this.attachShadow({
             mode: 'closed',
-            slotAssignment: 'named',
             delegatesFocus: true,
         });
 
-        shadow.append(...Styles.links(), template.content.cloneNode(true));
+        shadow.append(
+            styles.googleFonts.cloneNode(),
+            styles.tablerIcons.cloneNode(),
+            styles.custom.cloneNode(),
+            template.content.cloneNode(true),
+        );
 
-        this.#toggle = shadow.querySelector('button');
+        this.#toggle = shadow.querySelector('.dropdown__toggle');
         this.#items = shadow.querySelector('.dropdown__items');
     }
 
     connectedCallback() {
-        if (this.open) {
-            this.#items.classList.add('dropdown__items--open');
-        }
+        this.#toggle.addEventListener('click', () => this.toggle());
 
-        this.#toggle.addEventListener('click', e => {
-            this.#items.classList.toggle('dropdown__items--open');
-            this.dispatchEvent(new PointerEvent('click', e));
-        });
+        this.#render(this.visible);
     }
 
     /**
@@ -57,12 +61,33 @@ export default class Dropdown extends HTMLElement {
      * @param {string} value
      */
     attributeChangedCallback(name, _, value) {
-        if (name !== 'open') {
+        if (name !== 'visible') {
             return;
-        } else if (value) {
-            this.#items.classList.add('dropdown__items--open');
+        }
+
+        this.#render(!!value);
+    }
+
+    show() {
+        this.visible = true;
+    }
+    hide() {
+        this.visible = false;
+    }
+    toggle() {
+        this.visible = !this.visible;
+    }
+
+    /** @param {boolean} visible */
+    #render(visible) {
+        if (visible) {
+            this.#items.classList.add('dropdown__items--visible');
+            Backdrop.instance.tinted = false;
+            Backdrop.instance.visible = true;
+            Backdrop.instance.addEventListener('click', () => this.hide(), { once: true });
         } else {
-            this.#items.classList.remove('dropdown__items--open');
+            this.#items.classList.remove('dropdown__items--visible');
+            Backdrop.instance.visible = false;
         }
     }
 }
