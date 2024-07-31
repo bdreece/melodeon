@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Rubik+Doodle+Shadow&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/style.css"
+    >
+
+    <title>@(ViewData["Title"] ?? "melodeon")</title>
+</head>
+
+<body hx-boost="true">
+    <div class="drawer">
+        <input
+            type="checkbox"
+            class="drawer-toggle"
+            id="drawer-toggle"
+        >
+
+        <main class="drawer-content min-h-screen flex flex-col">
+            <header class="navbar bg-base-300 w-full">
+                <div class="flex-none lg:hidden">
+                    <label
+                        for="drawer-toggle"
+                        aria-label="open sidebar"
+                        class="btn btn-square btn-ghost"
+                    >
+                        <i class="iconify tabler--menu"></i>
+                    </label>
+                </div>
+
+                <div class="flex-1">
+                    <a
+                        class="btn btn-ghost text-2xl font-display"
+                        href="/"
+                    >
+                        melodeon
+                    </a>
+                </div>
+
+                @if (User.IsInRole(Role.Host))
+                {
+                    <partial name="_HostNavbar" />
+                }
+                else if (User.IsInRole(Role.Guest))
+                {
+                    <partial name="_GuestNavbar" />
+                }
+                else
+                {
+                    <partial name="_Navbar" />
+                }
+            </header>
+
+            <section class="grow">
+                @RenderBody()
+            </section>
+
+            <partial name="_Footer" />
+        </main>
+
+        <aside class="drawer-side">
+            <label
+                for="drawer-toggle"
+                aria-label="close sidebar"
+                class="drawer-overlay"
+            ></label>
+
+            <partial name="_Sidebar" />
+        </aside>
+
+        @if (User.IsInRole(Role.Host))
+        {
+            <partial name="_Playbar" />
+        }
+    </div>
+
+    <script
+        type="module"
+        src="/index.js"
+    ></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+
+</html>

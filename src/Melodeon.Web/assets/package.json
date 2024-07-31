@@ -1,0 +1,31 @@
+{
+    "name": "@melodeon/assets",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "npm run build:Release",
+        "build:Debug": "vite build -m development",
+        "build:Release": "vite build -m production",
+        "preview": "vite preview",
+        "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.node.json"
+    },
+    "devDependencies": {
+        "@iconify-json/tabler": "^1.1.118",
+        "@iconify/tailwind": "^1.1.1",
+        "@sveltejs/vite-plugin-svelte": "^3.1.1",
+        "@tsconfig/svelte": "^5.0.4",
+        "autoprefixer": "^10.4.19",
+        "daisyui": "^4.12.10",
+        "htmx.org": "^2.0.1",
+        "idiomorph": "^0.3.0",
+        "postcss": "^8.4.39",
+        "svelte": "^4.2.18",
+        "svelte-check": "^3.8.4",
+        "tailwindcss": "^3.4.6",
+        "tslib": "^2.6.3",
+        "typescript": "^5.2.2",
+        "vite": "^5.3.4"
+    }
+}

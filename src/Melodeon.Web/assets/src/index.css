@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .hero-signal {
+        background-image: url('/images/signal.svg');
+    }
+}

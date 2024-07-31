@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Project>
+    <PropertyGroup>
+        <BaseOutputPath>$(MSBuildThisFileDirectory)\bin</BaseOutputPath>
+        <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)\obj</BaseIntermediateOutputPath>
+        <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+        <TargetFramework Condition="'$(TargetFramework)' == ''">net8.0</TargetFramework>
+        <Authors>Brian Reece</Authors>
+        <PackageTags>melodeon;spotify;music;audio</PackageTags>
+        <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/bdreece/melodeon</PackageProjectUrl>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/bdreece/melodeon</RepositoryUrl>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <SignAssembly>true</SignAssembly>
+        <DelaySign>false</DelaySign>
+        <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\MelodeonKey.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+</Project>
