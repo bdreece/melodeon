@@ -45,6 +45,7 @@ public static class MelodeonAuthenticationBuilderExtensions
                 options = sp.GetRequiredService<IOptions<SpotifyOptions>>().Value;
             }
 
+            x.SaveTokens = true;
             x.ClientId = options.ClientId;
             x.ClientSecret = options.ClientSecret;
             x.CallbackPath = options.CallbackPath;

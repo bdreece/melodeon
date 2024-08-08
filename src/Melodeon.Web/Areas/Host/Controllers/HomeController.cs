@@ -7,5 +7,13 @@ namespace Melodeon.Web.Areas.Host.Controllers;
 [Area(nameof(Host))]
 public sealed class HomeController : Controller
 {
-    public IActionResult Index() => View();
+    public IActionResult Index()
+    {
+        return View();
+    }
+
+    public async Task<IActionResult> Search([FromQuery(Name = "q")] string query)
+    {
+        return await Task.FromResult(Ok());
+    }
 }

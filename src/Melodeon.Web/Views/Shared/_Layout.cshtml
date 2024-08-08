@@ -10,6 +10,11 @@
     >
 
     <link
+        rel="icon"
+        href="/images/favicon.ico"
+    >
+
+    <link
         rel="preconnect"
         href="https://fonts.googleapis.com"
     >
@@ -22,7 +27,7 @@
 
     <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Rubik+Doodle+Shadow&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Rowdies:wght@300;400;700&display=swap"
     >
 
     <link
@@ -33,7 +38,12 @@
     <title>@(ViewData["Title"] ?? "melodeon")</title>
 </head>
 
-<body hx-boost="true">
+<body
+    hx-ext="head-support"
+    hx-boost="true"
+    hx-select="#content"
+    hx-target="#content"
+>
     <div class="drawer">
         <input
             type="checkbox"
@@ -41,7 +51,10 @@
             id="drawer-toggle"
         >
 
-        <main class="drawer-content min-h-screen flex flex-col">
+        <main
+            class="drawer-content min-h-screen flex flex-col"
+            id="content"
+        >
             <header class="navbar bg-base-300 w-full">
                 <div class="flex-none lg:hidden">
                     <label
@@ -55,10 +68,17 @@
 
                 <div class="flex-1">
                     <a
-                        class="btn btn-ghost text-2xl font-display"
+                        class="flex items-center btn btn-ghost text-2xl font-display"
                         href="/"
                     >
-                        melodeon
+                        <img
+                            src="/images/favicon-32x32.png"
+                            width="32"
+                            height="32"
+                            alt=""
+                        >
+
+                        <span>melodeon</span>
                     </a>
                 </div>
 
@@ -83,28 +103,45 @@
             <partial name="_Footer" />
         </main>
 
-        <aside class="drawer-side">
+        <aside class="drawer-side isolate z-20">
             <label
                 for="drawer-toggle"
                 aria-label="close sidebar"
                 class="drawer-overlay"
             ></label>
 
-            <partial name="_Sidebar" />
+            @if (User.IsInRole(Role.Host))
+            {
+                <partial name="_HostSidebar" />
+            }
+            else if (User.IsInRole(Role.Guest))
+            {
+                <partial name="_GuestSidebar" />
+            }
+            else
+            {
+                <partial name="_Sidebar" />
+            }
         </aside>
 
         @if (User.IsInRole(Role.Host))
         {
-            <partial name="_Playbar" />
+            <menu hx-ext="morph" class="navbar bg-base-300 fixed bottom-0 z-10 flex flex-col sm:flex-row gap-4 justify-evenly items-center">
+                <spotify-player></spotify-player>
+
+                <spotify-volume></spotify-volume>
+            </menu>
         }
     </div>
 
+    @if (User.IsInRole(Role.Host))
+    {
+        <script async src="https://sdk.scdn.co/spotify-player.js"></script>
+    }
     <script
         type="module"
         src="/index.js"
     ></script>
-
-    @RenderSection("Scripts", required: false)
 </body>
 
 </html>

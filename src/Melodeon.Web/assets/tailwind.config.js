@@ -19,8 +19,8 @@ export default {
                 '5xl': '4.210rem',
             },
             fontFamily: {
-                display: 'Rubik Doodle Shadow',
-                sans: 'Rubik',
+                display: 'Rowdies',
+                sans: 'Outfit',
             },
             fontWeight: {
                 normal: '400',

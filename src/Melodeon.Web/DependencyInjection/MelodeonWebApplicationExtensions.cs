@@ -7,9 +7,9 @@ public static class MelodeonWebApplicationExtensions
     public static WebApplication UseMelodeonDefaults(this WebApplication app)
     {
         app.UseStaticFiles();
+        app.UseSession();
         app.UseAuthentication();
         app.UseAuthorization();
-        app.UseSession();
 
         app.Use(UserSessionMiddleware.InvokeAsync);
 

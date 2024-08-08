@@ -1,9 +1,13 @@
 declare global {
+    interface Window {
+        onSpotifyWebPlaybackSDKReady: () => void;
+    }
+
     namespace Spotify {
         interface Options {
             name: string,
             volume: number,
-            enableMediaSession: boolean,
+            enableMediaSession?: boolean | undefined,
             getOAuthToken(cb: (token: string) => void): void
         }
 
@@ -45,7 +49,14 @@ declare global {
         }
 
         interface WebPlaybackPlayer {
-            device_id: string
+            device_id: string;
+            position: number;
+            duration: number;
+            track_window: {
+                current_track: WebPlaybackTrack,
+                previous_tracks: WebPlaybackTrack[],
+                next_tracks: WebPlaybackTrack[],
+            }
         }
 
         type WebPlaybackErrorName =
@@ -81,6 +92,7 @@ declare global {
             togglePlay(): Promise<void>;
             seek(positionMs: number): Promise<void>;
             previousTrack(): Promise<void>;
+            nextTrack(): Promise<void>;
             activateElement(): Promise<void>;
         }
     }

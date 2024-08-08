@@ -22,6 +22,7 @@ public sealed class SpotifyOptions
         "user-read-playback-state",
         "user-read-email",
         "user-read-private",
+        "user-top-read"
     };
 
     public static readonly IReadOnlyDictionary<string, string> JsonKeys =

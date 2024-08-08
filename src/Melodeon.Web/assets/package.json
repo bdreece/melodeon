@@ -18,8 +18,6 @@
         "@tsconfig/svelte": "^5.0.4",
         "autoprefixer": "^10.4.19",
         "daisyui": "^4.12.10",
-        "htmx.org": "^2.0.1",
-        "idiomorph": "^0.3.0",
         "postcss": "^8.4.39",
         "svelte": "^4.2.18",
         "svelte-check": "^3.8.4",
@@ -27,5 +25,9 @@
         "tslib": "^2.6.3",
         "typescript": "^5.2.2",
         "vite": "^5.3.4"
+    },
+    "dependencies": {
+        "@spotify/web-api-ts-sdk": "^1.2.0",
+        "zod": "^3.23.8"
     }
 }

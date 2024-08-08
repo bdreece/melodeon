@@ -1,0 +1,45 @@
+<ul class="menu bg-base-200 min-h-full w-96 gap-4 p-4">
+    <li>
+        <a href="/host">Overview</a>
+    </li>
+
+    <div class="grow"></div>
+
+    <li>
+        <div class="flex justify-center">
+            <spotify-player></spotify-player>
+        </div>
+    </li>
+
+    <li>
+        <div class="flex justify-between">
+            <a
+                class="btn btn-ghost avatar"
+                href="/profile"
+            >
+                @{
+                    var name = User.FindFirstValue(ClaimTypes.Name);
+                    var image = User.FindFirstValue(ClaimTypes.UserData);
+                }
+
+                @if (!string.IsNullOrEmpty(image))
+                {
+                    <div class="w-10 rounded-full">
+                        <img src="@image">
+                    </div>
+                }
+
+                @name
+            </a>
+
+            <a
+                class="btn btn-ghost"
+                asp-area=""
+                asp-controller="Logout"
+                hx-boost="false"
+            >
+                Logout
+            </a>
+        </div>
+    </li>
+</ul>

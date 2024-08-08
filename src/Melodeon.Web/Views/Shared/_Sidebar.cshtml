@@ -1,13 +1,47 @@
 @using System.Security.Claims
 
+<ul class="menu bg-base-200 min-h-full w-96 gap-4 p-4">
+    <li>
+        <a class="btn btn-ghost" href="/">Home</a>
+    </li>
 
-<ul class="menu bg-base-200 min-h-full w-80 p-4">
-    @if (User.FindAll(ClaimTypes.NameIdentifier).Any())
-    {
+    <li>
+        <form
+            class="col-span-2 grid grid-cols-subgrid"
+            id="sidebar-join-form"
+            method="get"
+            asp-area="Guest"
+            asp-controller="Login"
+        >
+            <input
+                type="text"
+                name="code"
+                placeholder="Room Code"
+                class="input input-bordered"
+                required
+                minlength="8"
+                maxlength="8"
+            />
+        </form>
+    </li>
 
-    }
-    else
-    {
+    <li>
+        <button
+            class="btn btn-secondary"
+            type="submit"
+            form="sidebar-join-form"
+        >
+            Join Room
+        </button>
+    </li>
 
-    }
+    <a
+        class="btn btn-primary"
+        asp-area="Host"
+        asp-controller="Home"
+        asp-action="Index"
+        hx-boost="false"
+    >
+        Create Room
+    </a>
 </ul>
