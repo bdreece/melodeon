@@ -1,9 +1,10 @@
-using System.Linq.Expressions;
 using System.Collections;
-using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 using Melodeon.Data;
 using Melodeon.Domain;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Melodeon.Infrastructure.Data;
 

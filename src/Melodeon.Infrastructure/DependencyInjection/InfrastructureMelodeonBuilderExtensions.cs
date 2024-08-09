@@ -1,17 +1,17 @@
-using Microsoft.Extensions.Configuration;
-using Serilog;
-
-
-using Microsoft.Extensions.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Melodeon.Domain;
 using Melodeon.Data;
+using Melodeon.Domain;
 using Melodeon.Infrastructure;
 using Melodeon.Infrastructure.Data;
 using Melodeon.Infrastructure.Security;
 using Melodeon.Infrastructure.Spotify;
 using Melodeon.Spotify;
+
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Options;
+
+using Serilog;
 using Serilog.Events;
 
 namespace Microsoft.AspNetCore.Builder;
@@ -27,7 +27,7 @@ public static class InfrastructureMelodeonBuilderExtensions
     }
 
     public static IMelodeonBuilder AddSerilog(
-        this IMelodeonBuilder builder, 
+        this IMelodeonBuilder builder,
         Action<LoggerConfiguration>? configureAction = default)
     {
         LoggingOptions options;

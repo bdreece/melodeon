@@ -1,7 +1,7 @@
-name: Melodeon.Linode
-runtime: dotnet
-description: A minimal C# Pulumi program
+name: melodeon.linode;
+runtime: dotnet;
+description: A minimal C# Pulumi program;
 config:
-  pulumi:tags:
-    value:
-      pulumi:template: csharp
+    pulumi:tags:
+        value:
+            pulumi:template: csharp

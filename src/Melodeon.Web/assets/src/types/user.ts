@@ -4,5 +4,5 @@ export type User = {
     image: {
         src: string;
         alt: string;
-    }
+    };
 };

@@ -1,1 +1,1 @@
-export * as spotify from './spotify';
+export * as spotify from "./spotify";

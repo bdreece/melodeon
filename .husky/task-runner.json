@@ -4,17 +4,9 @@
         {
             "name": "eslint",
             "group": "pre-commit-operations",
-            "include": [
-                "*.js",
-                "*.ts",
-                "*.svelte"
-            ],
+            "include": ["*.js", "*.ts", "*.svelte"],
             "command": "npx",
-            "args": [
-                "eslint",
-                "--fix",
-                "${staged}"
-            ]
+            "args": ["eslint", "--fix", "${staged}"]
         },
         {
             "name": "prettier",
@@ -28,38 +20,21 @@
                 "*.cshtml"
             ],
             "command": "npx",
-            "args": [
-                "prettier",
-                "-c",
-                "-w",
-                "${staged}"
-            ]
+            "args": ["prettier", "-c", "-w", "${staged}"]
         },
         {
             "name": "stylelint",
             "group": "pre-commit-operations",
-            "include": [
-                "*.css"
-            ],
+            "include": ["*.css"],
             "command": "npx",
-            "args": [
-                "stylelint",
-                "--fix",
-                "${staged}"
-            ]
+            "args": ["stylelint", "--fix", "${staged}"]
         },
         {
             "name": "dotnet-format",
             "group": "pre-commit-operations",
-            "include": [
-                "*.cs"
-            ],
+            "include": ["*.cs"],
             "command": "dotnet",
-            "args": [
-                "format",
-                "--include",
-                "${staged}"
-            ]
+            "args": ["format", "--include", "${staged}"]
         }
     ]
 }

@@ -1,7 +1,9 @@
 using FluentAssertions;
 
 using FluentResults;
+
 using FluentValidation;
+
 using MediatR;
 
 using Melodeon.Data;

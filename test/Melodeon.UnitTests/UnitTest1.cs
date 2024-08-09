@@ -1,6 +1,6 @@
 namespace Melodeon.UnitTests;
 
-public class Tests
+public class tests
 {
     [SetUp]
     public void Setup()

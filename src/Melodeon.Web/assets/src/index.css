@@ -4,6 +4,6 @@
 
 @layer components {
     .hero-signal {
-        background-image: url('/images/signal.svg');
+        background-image: url("/images/signal.svg");
     }
 }
