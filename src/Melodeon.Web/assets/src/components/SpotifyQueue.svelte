@@ -36,9 +36,9 @@
   });
 
   function playTrack(uri: string) {
-    state &&
+    state && state.device.id &&
       client?.player
-        .startResumePlayback(state.device.id ?? "", state.context?.uri, undefined, { uri })
+        .startResumePlayback(state.device.id, state.context?.uri, undefined, { uri })
         .catch((e) => console.error(e));
   }
 </script>

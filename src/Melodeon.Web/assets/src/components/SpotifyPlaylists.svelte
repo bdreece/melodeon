@@ -11,7 +11,7 @@
   const unsubscribe = spotify.client.subscribe(($client) => {
     client = $client;
     client?.currentUser.playlists
-      .playlists(10)
+      .playlists()
       .then((p) => (playlists = p.items))
       .catch((e) => console.error(e));
   });
@@ -26,12 +26,14 @@
   }
 </script>
 
-<ul class="menu bg-base-200 rounded-box m-2">
-  {#each playlists as playlist}
-    <li>
-      <button type="button" on:click={() => playPlaylist(playlist.uri)}>
-        <h6 class="text-sm font-bold">{playlist.name}</h6>
-      </button>
-    </li>
-  {/each}
-</ul>
+<div class="mb-4 h-96 overflow-scroll">
+  <ul class="menu grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 bg-base-200 rounded-box m-2">
+    {#each playlists as playlist}
+      <li>
+        <button type="button" on:click={() => playPlaylist(playlist.uri)}>
+          <h6 class="text-sm font-bold">{playlist.name}</h6>
+        </button>
+      </li>
+    {/each}
+  </ul>
+</div>
