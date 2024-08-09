@@ -1,14 +1,65 @@
 {
-   "$schema": "https://alirezanet.github.io/Husky.Net/schema.json",
-   "tasks": [
-      {
-         "name": "welcome-message-example",
-         "command": "bash",
-         "args": [ "-c", "echo Husky.Net is awesome!" ],
-         "windows": {
-            "command": "cmd",
-            "args": ["/c", "echo Husky.Net is awesome!" ]
-         }
-      }
-   ]
+    "$schema": "https://alirezanet.github.io/Husky.Net/schema.json",
+    "tasks": [
+        {
+            "name": "eslint",
+            "group": "pre-commit-operations",
+            "include": [
+                "*.js",
+                "*.ts",
+                "*.svelte"
+            ],
+            "command": "npx",
+            "args": [
+                "eslint",
+                "--fix",
+                "${staged}"
+            ]
+        },
+        {
+            "name": "prettier",
+            "group": "pre-commit-operations",
+            "include": [
+                "*.js",
+                "*.ts",
+                "*.json",
+                "*.svelte",
+                "*.md",
+                "*.cshtml"
+            ],
+            "command": "npx",
+            "args": [
+                "prettier",
+                "-c",
+                "-w",
+                "${staged}"
+            ]
+        },
+        {
+            "name": "stylelint",
+            "group": "pre-commit-operations",
+            "include": [
+                "*.css"
+            ],
+            "command": "npx",
+            "args": [
+                "stylelint",
+                "--fix",
+                "${staged}"
+            ]
+        },
+        {
+            "name": "dotnet-format",
+            "group": "pre-commit-operations",
+            "include": [
+                "*.cs"
+            ],
+            "command": "dotnet",
+            "args": [
+                "format",
+                "--include",
+                "${staged}"
+            ]
+        }
+    ]
 }

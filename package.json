@@ -5,16 +5,52 @@
     "version": "1.0.0",
     "author": "Brian Reece <me@bdreece.dev>",
     "license": "GPL-3.0-only",
-    "workspaces": [
-        "src/Melodeon.Web/assets"
-    ],
-    "dependencies": {
+    "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^7.15.0",
         "@typescript-eslint/parser": "^7.15.0",
         "eslint": "^8.57.0",
         "eslint-config-prettier": "^9.1.0",
         "prettier": "^3.3.2",
+        "prettier-plugin-razor": "^1.0.11-alpha.1",
+        "prettier-plugin-svelte": "^3.2.6",
         "stylelint": "^16.6.1",
         "stylelint-config-standard": "^36.0.1"
+    },
+    "workspaces": [
+        "src/Melodeon.Web/assets"
+    ],
+    "eslintConfig": {
+        "root": true,
+        "extends": [
+            "eslint:recommended",
+            "plugin:@typescript-eslint/recommended",
+            "prettier"
+        ],
+        "parser": "@typescript-eslint/parser",
+        "plugins": [
+            "@typescript-eslint/eslint-plugin"
+        ],
+        "env": {
+            "es6": true,
+            "browser": true
+        },
+        "parserOptions": {
+            "sourceType": "module",
+            "ecmaVersion": "latest"
+        }
+    },
+    "prettier": {
+        "plugins": [
+            "prettier-plugin-razor",
+            "prettier-plugin-svelte"
+        ],
+        "semi": true,
+        "tabWidth": 4,
+        "arrowParens": "avoid",
+        "experimentalTernaries": true,
+        "singleAttributePerLine": true
+    },
+    "stylelint": {
+        "extends": "stylelint-config-standard"
     }
 }
